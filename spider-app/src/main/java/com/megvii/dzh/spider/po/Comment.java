@@ -13,5 +13,7 @@ public class Comment {
 
     private Date time;
 
+    private String userDevice;
+    
     private String content;
 }

@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import com.megvii.dzh.perfrom.configuration.SystemConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -18,15 +19,16 @@ import lombok.extern.slf4j.Slf4j;
  * @Author shuliyao
  * @CreateTime 2018/7/20 下午2:58
  */
-@Component
+@Component("threadPool")
+@Scope("prototype")
 @Slf4j
-public class ThreadPool {
+public class ThreadPool<T> {
     @Autowired
     private SystemConfig systemConfig;
 
     public ExecutorService cachedThreadPool;
 
-    public ArrayBlockingQueue<Object> arrayBlockingQueue;
+    public ArrayBlockingQueue<T> arrayBlockingQueue;
 
 
 
@@ -36,7 +38,7 @@ public class ThreadPool {
     @PostConstruct
     public void init() {
         log.info("初始化线程池组件，数据队列大小为：" + systemConfig.arrayBlockingQueueSize + ",线程池大小：" + systemConfig.poolSize);
-        this.arrayBlockingQueue = new ArrayBlockingQueue<Object>(systemConfig.arrayBlockingQueueSize); // 创建阻塞队列对象
+        this.arrayBlockingQueue = new ArrayBlockingQueue<>(systemConfig.arrayBlockingQueueSize); // 创建阻塞队列对象
         this.cachedThreadPool = Executors.newCachedThreadPool(); // 定义线程池
     }
 
@@ -54,10 +56,10 @@ public class ThreadPool {
     /**
      * 向队列中添加数并执行线程
      */
-    public boolean putAnRun(Object value, Class<?> clazz)
+    public boolean putAnRun(T t, Class<?> clazz)
             throws InterruptedException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         // 1.向下载队列中添加数据
-        arrayBlockingQueue.put(value);
+        arrayBlockingQueue.put(t);
         // 2.检查当前唤醒线程数，是否大于当前总线程数，若不大于则唤醒一个线程。
         if (((ThreadPoolExecutor) cachedThreadPool).getActiveCount() < systemConfig.poolSize) {
             runThread(clazz);

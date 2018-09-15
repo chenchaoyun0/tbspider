@@ -12,6 +12,8 @@ public class Post {
 
     private Integer replyNum;
 
+    private Integer type;
+    
     private Date time;
 
     private String content;

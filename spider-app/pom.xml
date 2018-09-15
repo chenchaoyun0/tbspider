@@ -22,7 +22,7 @@
     <dependencies>
         <dependency>
             <groupId>com.megvii.dzh</groupId>
-            <artifactId>thread-perform</artifactId>
+            <artifactId>thread-excute</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

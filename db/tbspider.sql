@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-09-15 18:14:26
+Date: 2018-09-16 01:30:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,6 +24,7 @@ CREATE TABLE `comment` (
   `user_name` varchar(100) DEFAULT NULL COMMENT '用户名',
   `content` longtext COMMENT '回帖内容',
   `title` varchar(200) DEFAULT NULL COMMENT '主题帖',
+  `user_device` varchar(100) DEFAULT NULL COMMENT '用户设备',
   `time` datetime DEFAULT NULL COMMENT '时间',
   PRIMARY KEY (`id`),
   KEY `user_name_idx` (`user_name`),
@@ -40,11 +41,22 @@ CREATE TABLE `post` (
   `title` varchar(200) DEFAULT NULL COMMENT '标题',
   `content` longtext COMMENT '主题内容',
   `reply_num` int(10) DEFAULT NULL COMMENT '回复数',
+  `type` int(1) DEFAULT '1' COMMENT '1-普通帖,2-精华帖',
   `time` datetime DEFAULT NULL COMMENT '发帖时间',
   PRIMARY KEY (`id`),
   KEY `user_name_idx` (`user_name`),
   KEY `title_idx` (`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='帖子表';
+) ENGINE=InnoDB AUTO_INCREMENT=75810 DEFAULT CHARSET=utf8mb4 COMMENT='帖子表';
+
+-- ----------------------------
+-- Table structure for post_url
+-- ----------------------------
+DROP TABLE IF EXISTS `post_url`;
+CREATE TABLE `post_url` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `post_url` varchar(200) DEFAULT NULL COMMENT '帖子地址',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=75849 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for user
@@ -88,4 +100,4 @@ CREATE TABLE `word_divide` (
   `type` int(1) DEFAULT NULL COMMENT '1-用户,2-帖子标题,3-回帖内容',
   PRIMARY KEY (`id`),
   KEY `index1` (`type`,`word`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='分词表';
+) ENGINE=InnoDB AUTO_INCREMENT=332104 DEFAULT CHARSET=utf8mb4 COMMENT='分词表';

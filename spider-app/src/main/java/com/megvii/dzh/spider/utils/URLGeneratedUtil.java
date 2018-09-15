@@ -1,13 +1,16 @@
 package com.megvii.dzh.spider.utils;
 
-/**
- * Created by CrowHawk on 17/10/7.
- */
 public class URLGeneratedUtil {
 
-    public final static String PREFIX = "http://www.shopbop.ink/bookmanager";
+    public final static String PREFIX = "http://tieba.baidu.com";
 
+    public final static String HTTP="http:";
+    
     public static String generatePostURL(String url) {
         return PREFIX + url;
+    }
+    
+    public static String generateHttpURL(String url) {
+        return HTTP + url;
     }
 }
