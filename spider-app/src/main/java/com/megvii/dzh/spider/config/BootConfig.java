@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.megvii.dzh.perfrom.concurrent.pool.ThreadPool;
 import com.megvii.dzh.spider.po.Post;
-import com.megvii.dzh.spider.po.PostUrl;
 import com.megvii.dzh.spider.po.WordDivide;
 import lombok.Data;
 
@@ -39,9 +38,4 @@ public class BootConfig {
    */
   @Autowired
   private ThreadPool<WordDivide> threadPoolWordDivide;
-  /**
-   * 
-   */
-  @Autowired
-  private ThreadPool<PostUrl> threadPostUrlDivide;
 }

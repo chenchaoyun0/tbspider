@@ -11,8 +11,12 @@ import com.megvii.dzh.spider.excute.PostSaveExcute;
 import com.megvii.dzh.spider.excute.WordDivideSaveExcute;
 import com.megvii.dzh.spider.po.Post;
 import com.megvii.dzh.spider.po.WordDivide;
+import com.megvii.dzh.spider.utils.SpringUtils;
+import com.megvii.dzh.spider.webmagic.processors.PostDetailProcessor;
+import com.megvii.dzh.spider.webmagic.processors.PostProcessor;
 import lombok.extern.slf4j.Slf4j;
 import us.codecraft.webmagic.ResultItems;
+import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 

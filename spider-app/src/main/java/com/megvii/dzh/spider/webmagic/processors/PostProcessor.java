@@ -54,11 +54,11 @@ public class PostProcessor implements PageProcessor {
         /**
          * 将所有帖子存入数据库待爬
          */
-        //SpiderFileUtils.writeString2local(page.getHtml().toString(), "E://tieb-spider//2.txt");
-        List<String> listPosts = page.getHtml().links().regex(POST_URL).all();
-        //listPosts.forEach(e -> URLGeneratedUtil.generatePostURL(e));
+        // SpiderFileUtils.writeString2local(page.getHtml().toString(), "E://tieb-spider//2.txt");
+        // List<String> listPosts = page.getHtml().links().regex(POST_URL).all();
+        // listPosts.forEach(e -> URLGeneratedUtil.generatePostURL(e));
         // page.addTargetRequests(listPosts);
-        page.putField("listPosts", listPosts);
+        // page.putField("listPosts", listPosts);
 
         /**
          * 帖子分页页面
@@ -77,7 +77,7 @@ public class PostProcessor implements PageProcessor {
      * @param page
      */
     private void crawlPost(Page page) {
-        //SpiderFileUtils.writeString2local(page.getHtml().toString(), "E://tieb-spider//2.html");
+        // SpiderFileUtils.writeString2local(page.getHtml().toString(), "E://tieb-spider//2.html");
         try {
             List<Post> postList = new ArrayList<>();
             for (int i = 1; i <= 100; i++) {
@@ -89,11 +89,11 @@ public class PostProcessor implements PageProcessor {
 
                 Post post = new Post();
                 String title = page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]/a/div[1]/span/text()").toString();
-                Integer type=1;
+                Integer type = 1;
                 // 精华帖
                 if ("精".equals(title)) {
-                    type=2;
-                    title =page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]/a/div[1]/span[2]/text()").toString();
+                    type = 2;
+                    title = page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]/a/div[1]/span[2]/text()").toString();
                 }
 
                 String replyNum = page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]/a/div[3]/div/span/text()").toString();
@@ -107,9 +107,13 @@ public class PostProcessor implements PageProcessor {
                 if (StringUtils.isBlank(title) || StringUtils.isBlank(userName)) {
                     continue;
                 }
-                
+
+                String postUrl = page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]/").$("a", "href").get();
+                postUrl = StringUtils.substringBefore(postUrl, "?");
+                postUrl = URLGeneratedUtil.generatePostURL(postUrl);
                 //
                 post.setType(type);
+                post.setPostUrl(postUrl);
                 post.setTitle(title);
                 post.setReplyNum(Integer.parseInt(replyNum == null ? "0" : replyNum));
                 post.setUserName(userName);

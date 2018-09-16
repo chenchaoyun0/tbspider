@@ -12,7 +12,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import com.megvii.dzh.spider.utils.CrowProxyProvider;
 import com.megvii.dzh.spider.utils.SpringUtils;
 import com.megvii.dzh.spider.webmagic.pipelines.PostDownloadPipeline;
-import com.megvii.dzh.spider.webmagic.pipelines.PostUrlSavePipeline;
 import com.megvii.dzh.spider.webmagic.processors.PostProcessor;
 import lombok.extern.slf4j.Slf4j;
 import tk.mybatis.spring.annotation.MapperScan;
@@ -46,10 +45,9 @@ public class SpiderApplication extends SpringBootServletInitializer implements A
             // 设置动态转发代理，使用定制的ProxyProvider
             httpClientDownloader.setProxyProvider(CrowProxyProvider.from(new Proxy("forward.xdaili.cn", 80)));
             Spider.create(new PostProcessor())//
-                    .addUrl(urls.toArray(new String[]{}))
-                    //.addUrl("http://tieba.baidu.com/f?kw=太原工业学院&ie=utf-8&pn=0")//
+//                    .addUrl(urls.toArray(new String[]{}))
+                    .addUrl("http://tieba.baidu.com/f?kw=太原工业学院&ie=utf-8&pn=0")//
                     .addPipeline(SpringUtils.getBean(PostDownloadPipeline.class))//
-                    .addPipeline(SpringUtils.getBean(PostUrlSavePipeline.class))//
                     .thread(20)//
                     .runAsync();
         } catch (Exception e) {

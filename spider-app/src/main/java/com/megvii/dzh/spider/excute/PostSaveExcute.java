@@ -4,6 +4,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import com.megvii.dzh.perfrom.bean.ResultBackObject;
 import com.megvii.dzh.perfrom.component.run.RunService;
 import com.megvii.dzh.perfrom.concurrent.thread.ExpandThread;
+import com.megvii.dzh.spider.excute.runservice.UpdatePostRunServiceImpl;
 import com.megvii.dzh.spider.mapper.PostMapper;
 import com.megvii.dzh.spider.po.Post;
 import com.megvii.dzh.spider.utils.SpringUtils;
@@ -23,6 +24,11 @@ public class PostSaveExcute extends ExpandThread<Post> {
         try {
             int insert = postMapper.insert(post);
             log.debug("insert(post) {}", insert);
+
+            if (insert > 0) {
+                return new UpdatePostRunServiceImpl(post);
+            }
+
         } catch (Exception e) {
             log.error("perform {}", e);
         } finally {

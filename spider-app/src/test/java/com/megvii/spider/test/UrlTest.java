@@ -1,6 +1,7 @@
  package com.megvii.spider.test;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 import org.apdplat.word.WordSegmenter;
@@ -11,9 +12,14 @@ public class UrlTest {
          //%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&
          String encode = URLEncoder.encode("太原工业学院","UTF-8");
          System.out.println(encode);
-         List<Word> words = WordSegmenter.seg("今天晚上还睡觉不");
-         List<Word> wordss = WordSegmenter.segWithStopWords("今天晚上还睡觉不");
-         System.out.println(words);
-         System.out.println(wordss);
+//         List<Word> words = WordSegmenter.seg("今天晚上还睡觉不");
+//         List<Word> wordss = WordSegmenter.segWithStopWords("今天晚上还睡觉不");
+//         System.out.println(words);
+//         System.out.println(wordss);
+         System.out.println(URLDecoder.decode("%E6%B2%90%E7%B4%AB%E4%B8%BA%E6%9D%8E", "UTF-8"));
+         
+         String url="/p/5414842553?pn=2";
+         boolean matches = url.matches("/p/\\d++\\?pn=\\d++");
+         System.out.println(matches);
     }
 }

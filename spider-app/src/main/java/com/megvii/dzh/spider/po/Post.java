@@ -9,6 +9,8 @@ public class Post {
     private String userName;
 
     private String title;
+    
+    private String postUrl;
 
     private Integer replyNum;
 

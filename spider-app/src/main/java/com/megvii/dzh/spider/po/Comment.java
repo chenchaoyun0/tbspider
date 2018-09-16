@@ -9,7 +9,7 @@ public class Comment {
 
     private String userName;
 
-    private String title;
+    private String postUrl;
 
     private Date time;
 
