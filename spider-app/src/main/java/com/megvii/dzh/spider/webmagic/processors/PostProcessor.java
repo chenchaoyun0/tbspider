@@ -1,25 +1,33 @@
 package com.megvii.dzh.spider.webmagic.processors;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.megvii.dzh.spider.config.Constant;
+import com.megvii.dzh.spider.po.Comment;
 import com.megvii.dzh.spider.po.Post;
+import com.megvii.dzh.spider.po.PostUser;
+import com.megvii.dzh.spider.po.User;
+import com.megvii.dzh.spider.po.UserTbs;
 import com.megvii.dzh.spider.utils.CrowProxyProvider;
+import com.megvii.dzh.spider.utils.DateConvertUtils;
 import com.megvii.dzh.spider.utils.ProxyGeneratedUtil;
+import com.megvii.dzh.spider.utils.SpiderFileUtils;
 import com.megvii.dzh.spider.utils.URLGeneratedUtil;
-import com.megvii.dzh.spider.webmagic.pipelines.PostDownloadPipeline;
 import lombok.extern.slf4j.Slf4j;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.downloader.HttpClientDownloader;
+import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.proxy.Proxy;
-import us.codecraft.webmagic.selector.Selectable;
+import us.codecraft.webmagic.selector.Html;
 
 @Slf4j
 public class PostProcessor implements PageProcessor {
@@ -28,9 +36,14 @@ public class PostProcessor implements PageProcessor {
      */
     private static final String POST_URL = "/p/\\d++";
     /**
-     * 匹配帖子列表页,${0} 为注入 贴吧名称 如 太原工业学院
+     * 贴吧首页过滤
      */
-    private static final String POST_LIST = "\\/\\/tieba.baidu.com\\/f\\?kw={0}\\&ie=utf-8\\&pn=\\d++";
+    private static final String TB_HOME = "http://tieba.baidu.com/f\\?kw=(.*?)";
+
+    /**
+     * 用户主页
+     */
+    private static final String USER_HOME = "/home/main(.*?)";
 
     // 抓取网站的相关配置，包括编码、抓取间隔、重试次数、代理、UserAgent等
     private Site site = Site.me()//
@@ -39,8 +52,7 @@ public class PostProcessor implements PageProcessor {
             .setTimeOut(60000)//
             .setRetryTimes(10)//
             .setSleepTime(new Random().nextInt(20) * 100)//
-            .setUserAgent(
-                    "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1 (compatible; Baiduspider-render/2.0; +http://www.baidu.com/search/spider.html)");
+            .setUserAgent("Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)");
 
     @Override
     public Site getSite() {
@@ -49,23 +61,60 @@ public class PostProcessor implements PageProcessor {
 
     @Override
     public void process(Page page) {
-        Selectable url = page.getUrl();
-        log.info("---> url {}", url);
-        /**
-         * 将所有帖子存入数据库待爬
-         */
-        // SpiderFileUtils.writeString2local(page.getHtml().toString(), "E://tieb-spider//2.txt");
-        // List<String> listPosts = page.getHtml().links().regex(POST_URL).all();
-        // listPosts.forEach(e -> URLGeneratedUtil.generatePostURL(e));
-        // page.addTargetRequests(listPosts);
-        // page.putField("listPosts", listPosts);
 
-        /**
-         * 帖子分页页面
-         */
-        String generatePostURL = URLGeneratedUtil.generateHttpURL(MessageFormat.format(POST_LIST, Constant.TIEBA_NAME));
-        if (page.getUrl().regex(generatePostURL).match()) {
-            crawlPost(page);
+        String url = page.getRequest().getUrl();
+        log.debug("---> url {}", url);
+        Html html = page.getHtml();
+        try {
+            //
+            //
+            if (url.matches(TB_HOME)) {
+                /**
+                 * 将所有帖子页面加入队列
+                 */
+                List<String> listPosts = html.links().regex(POST_URL).all();
+                listPosts.forEach(e -> URLGeneratedUtil.generatePostURL(e));
+                page.addTargetRequests(listPosts);
+            }
+
+            /**
+             * 帖子页
+             */
+            if (page.getUrl().regex(POST_URL).match()) {
+                // SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//post.html");
+                //// *[@id="j_core_title_wrap"]/h3/a
+                String title = html.xpath("/html/head/title/text()").get();
+                if (title == null) {
+                    title = html.xpath("//*[@id=\"j_core_title_wrap\"]/h3/a/text()").toString();
+                }
+                if (title == null) {
+                    System.out.println("=========");
+                }
+                if (title.indexOf("404") > 0) {
+                    return;
+                }
+                crawlPost(page, html);
+            }
+
+            /**
+             * 用户主页
+             */
+            if (page.getUrl().regex(USER_HOME).match()) {
+                SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//user.html");
+                String title = html.xpath("/html/head/title/text()").get();
+                if (title.indexOf("404") > 0) {
+                    return;
+                }
+                crawlUser(page, html);
+
+            }
+
+
+        } catch (Exception e) {
+            log.error("PostDetailProcessor error url {}", url, e);
+            String uuid = UUID.randomUUID().toString();
+            SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//"+uuid+".html");
+        } finally {
         }
 
     }
@@ -76,53 +125,174 @@ public class PostProcessor implements PageProcessor {
      * 
      * @param page
      */
-    private void crawlPost(Page page) {
-        // SpiderFileUtils.writeString2local(page.getHtml().toString(), "E://tieb-spider//2.html");
+    private void crawlPost(Page page, Html html) {
+        String url = page.getRequest().getUrl();
         try {
-            List<Post> postList = new ArrayList<>();
-            for (int i = 1; i <= 100; i++) {
-                // 置顶帖过滤
-                String cla = page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]").$("a", "class").get();
-                if ("j_common ti_item no_border".equals(cla)) {
-                    continue;
+            // 查看该帖子有多少页
+            String pageSize = html.xpath("//*[@id=\"thread_theme_5\"]/div[1]/ul/li[2]/span[2]/text()").toString();
+            // 将帖子的下一页加入待爬
+            int size = Integer.parseInt(pageSize == null ? "0" : pageSize);
+            if (size >= 2) {
+                for (int i = 2; i <= size; i++) {
+                    if (url.indexOf("pn") < 0) {
+                        String urlPost = url + "?pn=" + i;
+                        page.addTargetRequest(urlPost);
+                    }
                 }
-
-                Post post = new Post();
-                String title = page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]/a/div[1]/span/text()").toString();
-                Integer type = 1;
-                // 精华帖
-                if ("精".equals(title)) {
-                    type = 2;
-                    title = page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]/a/div[1]/span[2]/text()").toString();
-                }
-
-                String replyNum = page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]/a/div[3]/div/span/text()").toString();
-                // 有可能在下一行
-                if (StringUtils.isBlank(replyNum)) {
-                    replyNum = page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]/a/div[2]/div/span/text()").toString();
-                }
-
-                String userName = page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]/div/div[2]/div/span/text()").toString();
-                //
-                if (StringUtils.isBlank(title) || StringUtils.isBlank(userName)) {
-                    continue;
-                }
-
-                String postUrl = page.getHtml().xpath("//*[@id=\"frslistcontent\"]/li[" + i + "]/").$("a", "href").get();
-                postUrl = StringUtils.substringBefore(postUrl, "?");
-                postUrl = URLGeneratedUtil.generatePostURL(postUrl);
-                //
-                post.setType(type);
-                post.setPostUrl(postUrl);
-                post.setTitle(title);
-                post.setReplyNum(Integer.parseInt(replyNum == null ? "0" : replyNum));
-                post.setUserName(userName);
-                postList.add(post);
             }
-            // 添加到pipeline
-            page.putField("postList", postList);
+            /**
+             * 主题信息
+             */
+            Post post = new Post();
+            String data = html.xpath("//*[@id=\"j_p_postlist\"]/div[1]/@data-field").get();
+            PostUser postUser = null;
+            if (StringUtils.isNotBlank(data)) {
+                postUser = JSONObject.parseObject(data, PostUser.class);
+            }
+            String time = html.xpath("//*[@id=\"j_p_postlist\"]/div[1]/div[3]/div[3]/div[1]/ul[2]/li[2]/span/text()").toString();
+            String content = html.xpath("//*[@id=\"post_content_" + postUser.getContent().getPost_id() + "\"]/text()").toString();
+            String replyNum = html.xpath("//*[@id=\"thread_theme_5\"]/div[1]/ul/li[2]/span[1]/text()").toString();
+            String title = html.xpath("//*[@id=\"j_core_title_wrap\"]/div[2]/h1/a/text()").toString();
+            String userName = html.xpath("//*[@id=\"j_p_postlist\"]/div[1]/div[2]/ul/li[3]/a/text()").toString();
+            String userHref = html.xpath("//*[@id=\"j_p_postlist\"]/div/div[2]/ul/li[3]/a/@href").get();
+
+            //
+            post.setContent(content);
+            post.setPostUrl(StringUtils.substringBefore(url, "?pn="));
+            post.setReplyNum(Integer.parseInt(replyNum));
+            post.setTime(DateConvertUtils.parse(time == null ? postUser.getContent().getDate() : time, DateConvertUtils.DATE_TIME_NO_SS));
+            post.setTitle(title);
+            post.setType(1);
+            post.setUserName(userName);
+            //帖子分页不再保存
+            if (url.indexOf("pn") < 0) {
+                page.putField("post", post);
+                /**
+                 * 用户主页加入队列
+                 */
+                if (userHref != null) {
+                    String userHome = URLGeneratedUtil.generatePostURL(userHref);
+                    page.addTargetRequest(userHome);
+                }
+            }
+
+            /**
+             * 回复信息
+             */
+            if (post.getReplyNum() > 0) {
+                commentData(page, html);
+            }
+
         } catch (Exception e) {
-            log.error("crawlPost error {}", e);
+            log.error("crawlPost error url {}", url, e);
+            String uuid = UUID.randomUUID().toString();
+            SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//"+uuid+".html");
+        }
+    }
+
+
+    private void commentData(Page page, Html html) {
+        /**
+         * 回复信息
+         */
+        List<String> all = html.xpath("//*[@id=\"j_p_postlist\"]/@class=l_post j_l_post l_post_bright/").all();
+        List<Comment> listComment = new ArrayList<>();
+        for (int i = 2; i <= 50; i++) {
+            String dataComment = html.xpath("//*[@id=\"j_p_postlist\"]/div[" + i + "]/@data-field").toString();
+            String userHref = html.xpath("//*[@id=\"j_p_postlist\"]/div[" + i + "]/div[2]/ul/li[3]/a/@href").get();
+            /**
+             * 用户主页加入队列
+             */
+            if (userHref != null) {
+                String userHome = URLGeneratedUtil.generatePostURL(userHref);
+                page.addTargetRequest(userHome);
+            }
+            //
+            PostUser dataCommentPo = null;
+            if (StringUtils.isNotBlank(dataComment)) {
+                Comment comment = new Comment();
+                dataCommentPo = JSONObject.parseObject(dataComment, PostUser.class);
+                //
+                String contentComment = html.xpath("//*[@id=\"post_content_" + dataCommentPo.getContent().getPost_id() + "\"]/text()").toString();
+                String userNameComment = html.xpath("//*[@id=\"j_p_postlist\"]/div[" + i + "]/div[2]/ul/li[3]/a/text()").toString();
+                //
+                comment.setContent(contentComment);
+                comment.setPostUrl(page.getUrl().toString());
+                comment.setUserDevice(dataCommentPo.getContent().getOpen_type());
+                comment.setTime(DateConvertUtils.parse(dataCommentPo.getContent().getDate(), DateConvertUtils.DATE_TIME_NO_SS));
+                comment.setUserName(userNameComment);
+                //
+                listComment.add(comment);
+            } else {
+                continue;
+            }
+        }
+        page.putField("listComment", listComment);
+    }
+
+    /**
+     * 帖子页 获取帖子数据
+     * 
+     * @param page
+     */
+    private void crawlUser(Page page, Html html) {
+        String url = page.getRequest().getUrl();
+        try {
+            String bodyclass = html.xpath("/html/body/@class").get();
+            /**
+             * 某些用户被屏蔽
+             */
+            if(StringUtils.isNotBlank(bodyclass)&&bodyclass.contains("404")){
+                return;
+            }
+            
+            String userName = html.xpath("//*[@id=\"userinfo_wrap\"]/div[2]/div[2]/span/text()").toString();
+            String fansCount = html.xpath("//*[@id=\"container\"]/div[2]/div[4]/h1/span/a/text()").toString();
+            String followCount = html.xpath("//*[@id=\"container\"]/div[2]/div[3]/h1/span/a/text()").toString();
+            String gender = html.xpath("//*[@id=\"userinfo_wrap\"]/div[2]/div[3]/div/span[1]/@class").get();
+            String tbAge = html.xpath("//*[@id=\"userinfo_wrap\"]/div[2]/div[3]/div/span[2]/span[2]/text()").toString();
+            List<String> all = html.xpath("//*[@id=\"container\"]/div[1]/div/div[3]/ul/").all();
+            String userHeadUrl = html.xpath("//*[@id=\"j_userhead\"]/a/img/@src").get();
+            // 用户关注的贴吧
+            List<String> userTiebs = html.xpath("//*[@id=\"forum_group_wrap\"]/").all();
+            if (!CollectionUtils.isEmpty(userTiebs)) {
+                List<UserTbs> userTbsList = new ArrayList<>();
+                for (int i = 1; i <= userTiebs.size(); i++) {
+                    UserTbs userTbs = new UserTbs();
+                    String tbName = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[1]/text()").toString();
+                    String level = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[2]/@class").get();
+                    //
+                    String levelInt = StringUtils.substringAfter(level, "forum_level lv");
+                    if (levelInt.equals("")) {
+                        level = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[4]/@class").get();
+                        levelInt = StringUtils.substringAfter(level, "forum_level lv");
+                    }
+                    userTbs.setTbLevel(Integer.parseInt(levelInt));
+                    userTbs.setTbName(tbName);
+                    userTbs.setUserName(userName);
+                    userTbsList.add(userTbs);
+                }
+                page.putField("userTbsList", userTbsList);
+            }
+
+
+            //
+            User user = new User();
+            user.setUserHomeUrl(page.getRequest().getUrl());
+            user.setUserName(userName);
+            user.setFollowCount(Integer.parseInt(StringUtils.isBlank(followCount)?"0":followCount));
+            user.setFansCount(Integer.parseInt(StringUtils.isBlank(fansCount)?"0":fansCount));
+            user.setGender("userinfo_sex userinfo_sex_male".equals(gender) ? 1 : 0);
+            String numAge = StringUtils.substringBetween(tbAge, "吧龄:", "年");
+            user.setTbAge(Double.valueOf(StringUtils.isBlank(numAge)?"0":numAge));
+            user.setPostCount(CollectionUtils.isEmpty(all) ? 0 : all.size());
+            user.setUserHeadUrl(userHeadUrl);
+            //
+            page.putField("user", user);
+        } catch (Exception e) {
+            log.error("crawlUser error url {}", url, e);
+            String uuid = UUID.randomUUID().toString();
+            SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//"+uuid+".html");
         }
     }
 
@@ -131,8 +301,11 @@ public class PostProcessor implements PageProcessor {
         // 设置动态转发代理，使用定制的ProxyProvider
         httpClientDownloader.setProxyProvider(CrowProxyProvider.from(new Proxy("forward.xdaili.cn", 80)));
         Spider.create(new PostProcessor())//
-                .addUrl("http://tieba.baidu.com/f?kw=太原工业学院&ie=utf-8&pn=0")//
-                .addPipeline(new PostDownloadPipeline())//
+                // .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=0")//
+                .addUrl("http://tieba.baidu.com/home/main?un=%E6%AF%94%E7%BA%A2%E9%92%BB%E8%BF%98%E7%BA%A2%E6%BB%B4&ie=utf-8&fr=pb&ie=utf-8")//
+//                .addUrl("http://tieba.baidu.com/p/5882911970")//
+                // .addUrl("http://tieba.baidu.com/home/main?un=%E5%A4%A9%E7%A9%BAde%E7%81%B0%E6%9A%97&ie=utf-8&fr=pb&ie=utf-8")//
+                .addPipeline(new ConsolePipeline())//
                 .thread(1)//
                 .run();
     }

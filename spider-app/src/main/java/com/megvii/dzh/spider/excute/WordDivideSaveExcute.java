@@ -1,6 +1,7 @@
 package com.megvii.dzh.spider.excute;
 
 import java.util.concurrent.ArrayBlockingQueue;
+import com.alibaba.fastjson.JSONObject;
 import com.megvii.dzh.perfrom.bean.ResultBackObject;
 import com.megvii.dzh.perfrom.component.run.RunService;
 import com.megvii.dzh.perfrom.concurrent.thread.ExpandThread;
@@ -22,9 +23,9 @@ public class WordDivideSaveExcute extends ExpandThread<WordDivide> {
     public RunService perform(WordDivide wordDivide) {
         try {
             int insert = wordDivideMapper.insert(wordDivide);
-            log.debug("insert(post) {}", insert);
+            log.info("insert(post) {} {}",JSONObject.toJSONString(wordDivide), insert);
         } catch (Exception e) {
-            log.error("perform {}", e);
+            log.error("perform wordDivide {}",JSONObject.toJSONString(wordDivide), e);
         } finally {
         }
         return null;

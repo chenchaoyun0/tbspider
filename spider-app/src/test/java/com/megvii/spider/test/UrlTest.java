@@ -3,9 +3,9 @@
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.List;
-import org.apdplat.word.WordSegmenter;
-import org.apdplat.word.segmentation.Word;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 
 public class UrlTest {
      public static void main(String[] args) throws UnsupportedEncodingException {
@@ -18,8 +18,28 @@ public class UrlTest {
 //         System.out.println(wordss);
          System.out.println(URLDecoder.decode("%E6%B2%90%E7%B4%AB%E4%B8%BA%E6%9D%8E", "UTF-8"));
          
-         String url="/p/5414842553?pn=2";
-         boolean matches = url.matches("/p/\\d++\\?pn=\\d++");
-         System.out.println(matches);
+//         String url="/p/5414842553?pn=2";
+//         boolean matches = url.matches("/p/\\d++\\?pn=\\d++");
+//         System.out.println(matches);
+         
+//         String userHome="/home/main";
+//         boolean matchess = userHome.matches("/home/main(.*?)");
+//         System.out.println(matchess);
+//         String level="forum_level lv13";
+//         System.out.println(StringUtils.substringAfter(level, "forum_level lv"));
+//                 
+//         String url="5414842553";
+//         boolean matches = url.matches("\\d++");
+//         System.out.println(matches);
+//         
+//         String utrl="http://tieba.baidu.com/f?kw=xx";
+//         boolean b = utrl.matches("http://tieba.baidu.com/f\\?kw=(.*?)");
+//         System.out.println(b);
+//         
+//         String urlss="http://tieba.baidu.com/p/5566536525";
+//         System.out.println(StringUtils.substringBefore(urlss, "?pn="));
+         String age="吧龄:0";
+         System.out.println(age.substring(3, age.length()-1));
+         System.out.println(StringUtils.substringBetween(age, "吧龄:", "年"));
     }
 }

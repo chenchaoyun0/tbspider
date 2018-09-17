@@ -45,8 +45,9 @@ public class SpiderApplication extends SpringBootServletInitializer implements A
             // 设置动态转发代理，使用定制的ProxyProvider
             httpClientDownloader.setProxyProvider(CrowProxyProvider.from(new Proxy("forward.xdaili.cn", 80)));
             Spider.create(new PostProcessor())//
-//                    .addUrl(urls.toArray(new String[]{}))
-                    .addUrl("http://tieba.baidu.com/f?kw=太原工业学院&ie=utf-8&pn=0")//
+                     //.addUrl(urls.toArray(new String[]{}))
+                     .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=0")//
+                    //.addUrl("http://tieba.baidu.com/p/5880963854")//
                     .addPipeline(SpringUtils.getBean(PostDownloadPipeline.class))//
                     .thread(20)//
                     .runAsync();

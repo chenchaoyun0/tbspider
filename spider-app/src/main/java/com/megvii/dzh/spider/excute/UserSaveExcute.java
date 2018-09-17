@@ -5,28 +5,28 @@ import com.alibaba.fastjson.JSONObject;
 import com.megvii.dzh.perfrom.bean.ResultBackObject;
 import com.megvii.dzh.perfrom.component.run.RunService;
 import com.megvii.dzh.perfrom.concurrent.thread.ExpandThread;
-import com.megvii.dzh.spider.mapper.PostMapper;
-import com.megvii.dzh.spider.po.Post;
+import com.megvii.dzh.spider.mapper.UserMapper;
+import com.megvii.dzh.spider.po.User;
 import com.megvii.dzh.spider.utils.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class PostSaveExcute extends ExpandThread<Post> {
+public class UserSaveExcute extends ExpandThread<User> {
 
-    private PostMapper postMapper = SpringUtils.getBean(PostMapper.class);
+    private UserMapper UserMapper = SpringUtils.getBean(UserMapper.class);
 
-    public PostSaveExcute(ArrayBlockingQueue<Post> arrayBlockingQueue) {
+    public UserSaveExcute(ArrayBlockingQueue<User> arrayBlockingQueue) {
         super(arrayBlockingQueue);
     }
 
     @Override
-    public RunService perform(Post post) {
+    public RunService perform(User user) {
         try {
-            int insert = postMapper.insert(post);
-            log.info("insert(post) {} {}",JSONObject.toJSONString(post), insert);
+            int insert = UserMapper.insert(user);
+            log.info("insert(User) {} {}",JSONObject.toJSONString(user),insert);
 
         } catch (Exception e) {
-            log.error("perform post {}",JSONObject.toJSONString(post), e);
+            log.error("perform User {}",JSONObject.toJSONString(user), e);
         } finally {
         }
         return null;
