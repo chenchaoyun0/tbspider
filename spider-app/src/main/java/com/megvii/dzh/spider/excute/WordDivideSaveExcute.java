@@ -23,9 +23,9 @@ public class WordDivideSaveExcute extends ExpandThread<WordDivide> {
     public RunService perform(WordDivide wordDivide) {
         try {
             int insert = wordDivideMapper.insert(wordDivide);
-            log.info("insert(post) {} {}",JSONObject.toJSONString(wordDivide), insert);
+            log.debug("insert(post) {} {}",JSONObject.toJSONString(wordDivide), insert);
         } catch (Exception e) {
-            log.error("perform wordDivide {}",JSONObject.toJSONString(wordDivide), e);
+            log.error("perform error wordDivide {}",JSONObject.toJSONString(wordDivide), e);
         } finally {
         }
         return null;

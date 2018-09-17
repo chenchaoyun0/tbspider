@@ -23,10 +23,10 @@ public class UserSaveExcute extends ExpandThread<User> {
     public RunService perform(User user) {
         try {
             int insert = UserMapper.insert(user);
-            log.info("insert(User) {} {}",JSONObject.toJSONString(user),insert);
+            log.debug("insert(User) {} {}",JSONObject.toJSONString(user),insert);
 
         } catch (Exception e) {
-            log.error("perform User {}",JSONObject.toJSONString(user), e);
+            log.error("perform error User {}",JSONObject.toJSONString(user), e);
         } finally {
         }
         return null;

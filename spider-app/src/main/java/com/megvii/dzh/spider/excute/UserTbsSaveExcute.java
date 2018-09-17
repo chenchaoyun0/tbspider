@@ -23,10 +23,10 @@ public class UserTbsSaveExcute extends ExpandThread<UserTbs> {
     public RunService perform(UserTbs userTbs) {
         try {
             int insert = UserTbsMapper.insert(userTbs);
-            log.info("insert(UserTbs) {} {}",JSONObject.toJSONString(userTbs), insert);
+            log.debug("insert(UserTbs) {} {}",JSONObject.toJSONString(userTbs), insert);
 
         } catch (Exception e) {
-            log.error("perform userTbs {}",JSONObject.toJSONString(userTbs), e);
+            log.error("perform error userTbs {}",JSONObject.toJSONString(userTbs), e);
         } finally {
         }
         return null;

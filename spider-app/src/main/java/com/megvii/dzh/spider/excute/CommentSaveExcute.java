@@ -23,10 +23,10 @@ public class CommentSaveExcute extends ExpandThread<Comment> {
     public RunService perform(Comment Comment) {
         try {
             int insert = CommentMapper.insert(Comment);
-            log.info("insert(Comment) {} {}",JSONObject.toJSONString(Comment), insert);
+            log.debug("insert(Comment) {} {}",JSONObject.toJSONString(Comment), insert);
 
         } catch (Exception e) {
-            log.error("perform Comment {}",JSONObject.toJSONString(Comment), e);
+            log.error("perform error Comment {}",JSONObject.toJSONString(Comment), e);
         } finally {
         }
         return null;

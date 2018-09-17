@@ -38,8 +38,11 @@ public class UrlTest {
 //         
 //         String urlss="http://tieba.baidu.com/p/5566536525";
 //         System.out.println(StringUtils.substringBefore(urlss, "?pn="));
-         String age="吧龄:0";
-         System.out.println(age.substring(3, age.length()-1));
-         System.out.println(StringUtils.substringBetween(age, "吧龄:", "年"));
+//         String age="吧龄:0";
+//         System.out.println(age.substring(3, age.length()-1));
+//         System.out.println(StringUtils.substringBetween(age, "吧龄:", "年"));
+         String utrl="//tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=50";
+         boolean b = utrl.matches("(.*)kw=(.*)\\&ie=utf-8&pn=\\d++");
+         System.out.println(b);
     }
 }

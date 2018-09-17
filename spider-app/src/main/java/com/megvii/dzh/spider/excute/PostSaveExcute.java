@@ -23,10 +23,10 @@ public class PostSaveExcute extends ExpandThread<Post> {
     public RunService perform(Post post) {
         try {
             int insert = postMapper.insert(post);
-            log.info("insert(post) {} {}",JSONObject.toJSONString(post), insert);
+            log.debug("insert(post) {} {}",JSONObject.toJSONString(post), insert);
 
         } catch (Exception e) {
-            log.error("perform post {}",JSONObject.toJSONString(post), e);
+            log.error("perform error post {}",JSONObject.toJSONString(post), e);
         } finally {
         }
         return null;
