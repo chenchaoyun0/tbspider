@@ -54,7 +54,7 @@ public class PostProcessor implements PageProcessor {
     /**
      * 爬取起始页
      */
-    private long pageNo = 34900;
+    private long pageNo = 50;
     /**
      * 爬取多少页帖子
      */
