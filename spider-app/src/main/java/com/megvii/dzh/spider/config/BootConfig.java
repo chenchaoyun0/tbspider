@@ -20,10 +20,13 @@ public class BootConfig {
   @Value("${server.port}")
   private String serverPort;
   
+  @Value("${spider.threads:80}")
+  private int spiderThreads;
+  
   /**
    * 重试次数
    */
-  @Value("${site.retry.times}")
+  @Value("${site.retry.times:4}")
   private String siteRetryTimes;
   
   /**

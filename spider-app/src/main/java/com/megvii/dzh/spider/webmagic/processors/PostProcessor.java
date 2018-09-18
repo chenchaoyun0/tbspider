@@ -69,8 +69,6 @@ public class PostProcessor implements PageProcessor {
             .setTimeOut(60000)//
             .setRetryTimes(10)//
             .setSleepTime(new Random().nextInt(20) * 100)//
-            // .setUserAgent("Mozilla/5.0 (compatible; Baiduspider/2.0;
-            // +http://www.baidu.com/search/spider.html)")//
             .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:24.0) Gecko/20100101");
 
     @Override
@@ -126,7 +124,7 @@ public class PostProcessor implements PageProcessor {
              * 用户主页
              */
             if (page.getUrl().regex(USER_HOME).match()) {
-                 SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//userHome.html");
+                SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//userHome.html");
                 String title = html.xpath("/html/head/title/text()").get();
                 if (StringUtils.isNotBlank(title) && title.indexOf("404") > 0) {
                     return;
@@ -210,7 +208,7 @@ public class PostProcessor implements PageProcessor {
             String title = html.xpath("//*[@id=\"j_core_title_wrap\"]/div[2]/h1/a/text()").toString();
             String userNickName = html.xpath("//*[@id=\"j_p_postlist\"]/div[1]/div[2]/ul/li[3]/a/text()").toString();
             String userHref = html.xpath("//*[@id=\"j_p_postlist\"]/div/div[2]/ul/li[3]/a/@href").get();
-            String userName=postUser.getAuthor().getUser_name();
+            String userName = postUser.getAuthor().getUser_name();
             // 保存数据
             post.setContent(content);
             post.setPostUrl(StringUtils.substringBefore(url, "?pn="));
@@ -268,12 +266,12 @@ public class PostProcessor implements PageProcessor {
             //
             PostUser dataCommentPo = null;
             if (StringUtils.isNotBlank(dataComment)) {
-                Comment comment = new Comment();
                 dataCommentPo = JSONObject.parseObject(dataComment, PostUser.class);
                 //
                 String contentComment = html.xpath("//*[@id=\"post_content_" + dataCommentPo.getContent().getPost_id() + "\"]/text()").toString();
                 String userNameComment = html.xpath("//*[@id=\"j_p_postlist\"]/div[" + i + "]/div[2]/ul/li[3]/a/text()").toString();
                 //
+                Comment comment = new Comment();
                 comment.setContent(contentComment);
                 comment.setPostUrl(page.getUrl().toString());
                 comment.setUserDevice(dataCommentPo.getContent().getOpen_type());
@@ -318,13 +316,25 @@ public class PostProcessor implements PageProcessor {
                 for (int i = 1; i <= userTiebs.size(); i++) {
                     UserTbs userTbs = new UserTbs();
                     String tbName = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[1]/text()").toString();
+                    if (StringUtils.isBlank(tbName)) {
+                        tbName = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[2]/text()").toString();
+                    }
+                    //
                     String level = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[2]/@class").get();
+                    if (StringUtils.isBlank(level)) {
+                        level = html.xpath("//*[@id=\"forum_group_wrap\"]/a[3]/span[3]/@class").get();
+                    }
                     //
                     String levelInt = StringUtils.substringAfter(level, "forum_level lv");
                     if (levelInt.equals("")) {
                         level = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[4]/@class").get();
                         levelInt = StringUtils.substringAfter(level, "forum_level lv");
                     }
+                    // 实在获取不到用户关注贴吧名跳过
+                    if (StringUtils.isBlank(levelInt) || StringUtils.isBlank(tbName)) {
+                        continue;
+                    }
+
                     userTbs.setTbLevel(Integer.parseInt(levelInt));
                     userTbs.setTbName(tbName);
                     userTbs.setUserName(userName);
@@ -360,9 +370,9 @@ public class PostProcessor implements PageProcessor {
         httpClientDownloader.setProxyProvider(CrowProxyProvider.from(new Proxy("forward.xdaili.cn", 80)));
         Spider.create(new PostProcessor())//
                 // .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=0")//
-                 .addUrl("http://tieba.baidu.com/p/5776533952")//
-                .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=34900")//
-                 .addUrl("http://tieba.baidu.com/home/main?un=651522121&ie=utf-8&fr=pb&ie=utf-8")//
+                // .addUrl("http://tieba.baidu.com/p/2124996289")//
+                // .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=34900")//
+                .addUrl("http://tieba.baidu.com/home/main?un=%E5%B0%91%E7%88%B794205430&ie=utf-8&fr=pb&ie=utf-8")//
                 .addPipeline(new ConsolePipeline())//
                 .thread(1)//
                 .run();

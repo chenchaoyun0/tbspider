@@ -30,19 +30,7 @@ public class SpiderApplication extends SpringBootServletInitializer implements A
     public void onApplicationEvent(ContextRefreshedEvent event) {
         log.info("--->开机服务执行的操作....");
         try {
-            // List<String> urls = new ArrayList<>();
-            // for (int i = 0; i < 100000; i = i + 50) {
-            // String url = "http://tieba.baidu.com/f?kw=太原工业学院&ie=utf-8&pn=" + i;
-            // urls.add(url);
-            // }
-
-            Spider.create(new PostProcessor())//
-                    // .addUrl(urls.toArray(new String[]{}))
-                    .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=0")//
-                    // .addUrl("http://tieba.baidu.com/p/2124996289")//
-                    .addPipeline(SpringUtils.getBean(PostDownloadPipeline.class))//
-                    .thread(100)//
-                    .runAsync();
+            
         } catch (Exception e) {
             log.error("onApplicationEvent error", e);
         }

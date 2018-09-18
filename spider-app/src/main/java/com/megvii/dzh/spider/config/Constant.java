@@ -1,8 +1,5 @@
 package com.megvii.dzh.spider.config;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 /**
  * 常量类
  */

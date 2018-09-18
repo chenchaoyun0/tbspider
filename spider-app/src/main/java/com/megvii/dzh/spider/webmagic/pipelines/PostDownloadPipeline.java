@@ -2,6 +2,7 @@ package com.megvii.dzh.spider.webmagic.pipelines;
 
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.apdplat.word.WordSegmenter;
 import org.apdplat.word.segmentation.Word;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,14 @@ public class PostDownloadPipeline implements Pipeline {
                     bootConfig.getThreadPoolPost().putAnRun(post, PostSaveExcute.class);
                     // 保存分词
                     String title = post.getTitle();
+                    if(StringUtils.isBlank(title)){
+                        continue;
+                    }
                     List<Word> list = WordSegmenter.seg(title);
                     // 另外线程保存分词
                     for (Word word : list) {
                         String text = word.getText();
-                        if (text.matches("d++")) {
+                        if (text.trim().matches("\\d++")) {
                             continue;
                         }
                         WordDivide wordDivide = new WordDivide();
@@ -65,10 +69,13 @@ public class PostDownloadPipeline implements Pipeline {
                         bootConfig.getThreadCommentDivide().putAnRun(comment, CommentSaveExcute.class);
                         // 保存分词
                         String content = comment.getContent();
+                        if(StringUtils.isBlank(content)){
+                            continue;
+                        }
                         List<Word> list = WordSegmenter.seg(content);
                         // 另外线程保存分词
                         for (Word word : list) {
-                            if (word.getText().matches("d++")) {
+                            if (word.getText().trim().matches("\\d++")) {
                                 continue;
                             }
                             WordDivide wordDivide = new WordDivide();
@@ -102,7 +109,7 @@ public class PostDownloadPipeline implements Pipeline {
                     // 另外线程保存分词
                     for (Word word : list) {
                         String text = word.getText();
-                        if (text.matches("d++")) {
+                        if (text.trim().matches("\\d++")) {
                             continue;
                         }
                         WordDivide wordDivide = new WordDivide();
