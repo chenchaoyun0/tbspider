@@ -68,6 +68,9 @@ public class PostDownloadPipeline implements Pipeline {
                         List<Word> list = WordSegmenter.seg(content);
                         // 另外线程保存分词
                         for (Word word : list) {
+                            if (word.getText().matches("d++")) {
+                                continue;
+                            }
                             WordDivide wordDivide = new WordDivide();
                             wordDivide.setWord(word.getText());
                             wordDivide.setType(3);
@@ -99,7 +102,7 @@ public class PostDownloadPipeline implements Pipeline {
                     // 另外线程保存分词
                     for (Word word : list) {
                         String text = word.getText();
-                        if (text.matches("\\d++")) {
+                        if (text.matches("d++")) {
                             continue;
                         }
                         WordDivide wordDivide = new WordDivide();

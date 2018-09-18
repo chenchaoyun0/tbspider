@@ -69,7 +69,9 @@ public class PostProcessor implements PageProcessor {
             .setTimeOut(60000)//
             .setRetryTimes(10)//
             .setSleepTime(new Random().nextInt(20) * 100)//
-            .setUserAgent("Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)");
+            // .setUserAgent("Mozilla/5.0 (compatible; Baiduspider/2.0;
+            // +http://www.baidu.com/search/spider.html)")//
+            .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:24.0) Gecko/20100101");
 
     @Override
     public Site getSite() {
@@ -104,7 +106,7 @@ public class PostProcessor implements PageProcessor {
              * 帖子页
              */
             if (page.getUrl().regex(POST_URL).match()) {
-                // SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//post.html");
+                SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//postDetail.html");
                 String title = html.xpath("/html/head/title/text()").get();
                 if (title == null) {
                     title = html.xpath("//*[@id=\"j_core_title_wrap\"]/h3/a/text()").toString();
@@ -124,7 +126,7 @@ public class PostProcessor implements PageProcessor {
              * 用户主页
              */
             if (page.getUrl().regex(USER_HOME).match()) {
-                // SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//user.html");
+                 SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//userHome.html");
                 String title = html.xpath("/html/head/title/text()").get();
                 if (StringUtils.isNotBlank(title) && title.indexOf("404") > 0) {
                     return;
@@ -206,9 +208,9 @@ public class PostProcessor implements PageProcessor {
             String content = html.xpath("//*[@id=\"post_content_" + postUser.getContent().getPost_id() + "\"]/text()").toString();
             String replyNum = html.xpath("//*[@id=\"thread_theme_5\"]/div[1]/ul/li[2]/span[1]/text()").toString();
             String title = html.xpath("//*[@id=\"j_core_title_wrap\"]/div[2]/h1/a/text()").toString();
-            String userName = html.xpath("//*[@id=\"j_p_postlist\"]/div[1]/div[2]/ul/li[3]/a/text()").toString();
+            String userNickName = html.xpath("//*[@id=\"j_p_postlist\"]/div[1]/div[2]/ul/li[3]/a/text()").toString();
             String userHref = html.xpath("//*[@id=\"j_p_postlist\"]/div/div[2]/ul/li[3]/a/@href").get();
-
+            String userName=postUser.getAuthor().getUser_name();
             // 保存数据
             post.setContent(content);
             post.setPostUrl(StringUtils.substringBefore(url, "?pn="));
@@ -358,9 +360,9 @@ public class PostProcessor implements PageProcessor {
         httpClientDownloader.setProxyProvider(CrowProxyProvider.from(new Proxy("forward.xdaili.cn", 80)));
         Spider.create(new PostProcessor())//
                 // .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=0")//
-                // .addUrl("http://tieba.baidu.com/home/main?un=%E6%AF%94%E7%BA%A2%E9%92%BB%E8%BF%98%E7%BA%A2%E6%BB%B4&ie=utf-8&fr=pb&ie=utf-8")//
+                 .addUrl("http://tieba.baidu.com/p/5776533952")//
                 .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=34900")//
-                // .addUrl("http://tieba.baidu.com/home/main?un=%E5%A4%A9%E7%A9%BAde%E7%81%B0%E6%9A%97&ie=utf-8&fr=pb&ie=utf-8")//
+                 .addUrl("http://tieba.baidu.com/home/main?un=651522121&ie=utf-8&fr=pb&ie=utf-8")//
                 .addPipeline(new ConsolePipeline())//
                 .thread(1)//
                 .run();

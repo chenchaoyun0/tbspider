@@ -41,7 +41,7 @@ public class SpiderApplication extends SpringBootServletInitializer implements A
                     .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=0")//
                     // .addUrl("http://tieba.baidu.com/p/2124996289")//
                     .addPipeline(SpringUtils.getBean(PostDownloadPipeline.class))//
-                    .thread(50)//
+                    .thread(100)//
                     .runAsync();
         } catch (Exception e) {
             log.error("onApplicationEvent error", e);
