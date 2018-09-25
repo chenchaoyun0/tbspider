@@ -104,14 +104,14 @@ public class PostProcessor implements PageProcessor {
              * 帖子页
              */
             if (page.getUrl().regex(POST_URL).match()) {
-                SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//postDetail.html");
+                //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//postDetail.html");
                 String title = html.xpath("/html/head/title/text()").get();
                 if (title == null) {
                     title = html.xpath("//*[@id=\"j_core_title_wrap\"]/h3/a/text()").toString();
                 }
                 if (title == null) {
                     log.error("title is null...");
-                    SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//title-null-post-" + UUID.randomUUID().toString() + ".html");
+                    //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//title-null-post-" + UUID.randomUUID().toString() + ".html");
                 }
                 // 消失的帖子过滤
                 if (StringUtils.isNotBlank(title) && title.indexOf("404") > 0) {
@@ -124,7 +124,7 @@ public class PostProcessor implements PageProcessor {
              * 用户主页
              */
             if (page.getUrl().regex(USER_HOME).match()) {
-                SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//userHome.html");
+                //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//userHome.html");
                 String title = html.xpath("/html/head/title/text()").get();
                 if (StringUtils.isNotBlank(title) && title.indexOf("404") > 0) {
                     return;
@@ -140,7 +140,7 @@ public class PostProcessor implements PageProcessor {
                  * 将所有帖子页面加入队列
                  */
                 if (pageNo < pageSize) {
-                    log.info("---------> 上回爬取耗时 {} ms", (System.currentTimeMillis() - start));
+                    //log.info("---------> 上回爬取耗时 {} ms", (System.currentTimeMillis() - start));
                     log.info("---------> 继续爬取第 {} 页", pageNo / 50);
                     // 将贴吧名编码
                     String tieBaName = URLEncoder.encode(Constant.TIEBA_NAME, "UTF-8");
@@ -154,7 +154,7 @@ public class PostProcessor implements PageProcessor {
         } catch (Exception e) {
             log.error("PostDetailProcessor error url {}", url, e);
             String uuid = UUID.randomUUID().toString();
-            SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//" + uuid + ".html");
+            //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//" + uuid + ".html");
         } finally {
         }
 
@@ -326,7 +326,7 @@ public class PostProcessor implements PageProcessor {
                     }
                     //
                     String levelInt = StringUtils.substringAfter(level, "forum_level lv");
-                    if (levelInt.equals("")) {
+                    if (StringUtils.isBlank(levelInt)) {
                         level = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[4]/@class").get();
                         levelInt = StringUtils.substringAfter(level, "forum_level lv");
                     }
@@ -371,8 +371,8 @@ public class PostProcessor implements PageProcessor {
         Spider.create(new PostProcessor())//
                 // .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=0")//
                 // .addUrl("http://tieba.baidu.com/p/2124996289")//
-                // .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=34900")//
-                .addUrl("http://tieba.baidu.com/home/main?un=%E5%B0%91%E7%88%B794205430&ie=utf-8&fr=pb&ie=utf-8")//
+                 .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=36950")//
+//                .addUrl("http://tieba.baidu.com/home/main?un=%E5%B0%91%E7%88%B794205430&ie=utf-8&fr=pb&ie=utf-8")//
                 .addPipeline(new ConsolePipeline())//
                 .thread(1)//
                 .run();

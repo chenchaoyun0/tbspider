@@ -28,7 +28,7 @@ public class UrlTest {
 //         String level="forum_level lv13";
 //         System.out.println(StringUtils.substringAfter(level, "forum_level lv"));
 //                 
-         String url="01";
+         String url="0.0";
          boolean matches = url.matches("\\d++");
          System.out.println("-->"+matches);
 //         

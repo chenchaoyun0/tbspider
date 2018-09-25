@@ -18,7 +18,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.Spider.Status;
 
 @RestController
 @RequestMapping("/")
@@ -37,7 +36,7 @@ public class SpiderController {
     public String startSpider() {
         try {
 
-            if (spider.getStatus() != Status.Stopped) {
+            if (spider.getThreadAlive()>0) {
                 return "爬虫程序已启动,请勿重新请求";
             }
             // 启动多少个线程

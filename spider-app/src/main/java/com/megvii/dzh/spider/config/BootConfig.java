@@ -20,7 +20,7 @@ public class BootConfig {
   @Value("${server.port}")
   private String serverPort;
   
-  @Value("${spider.threads:80}")
+  @Value("${spider.threads:100}")
   private int spiderThreads;
   
   /**
