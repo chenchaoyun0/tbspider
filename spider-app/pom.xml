@@ -6,7 +6,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cyc</groupId>
     <artifactId>spider-app</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>spiderboot</name>
     <properties>
@@ -20,11 +19,11 @@
     </parent>
 
     <dependencies>
-        <dependency>
+        <!-- <dependency>
             <groupId>com.megvii.dzh</groupId>
             <artifactId>thread-excute</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        </dependency> -->
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>

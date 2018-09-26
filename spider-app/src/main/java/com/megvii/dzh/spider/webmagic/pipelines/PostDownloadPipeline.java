@@ -7,17 +7,16 @@ import org.apdplat.word.WordSegmenter;
 import org.apdplat.word.segmentation.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.megvii.dzh.spider.config.BootConfig;
-import com.megvii.dzh.spider.excute.CommentSaveExcute;
-import com.megvii.dzh.spider.excute.PostSaveExcute;
-import com.megvii.dzh.spider.excute.UserSaveExcute;
-import com.megvii.dzh.spider.excute.UserTbsSaveExcute;
-import com.megvii.dzh.spider.excute.WordDivideSaveExcute;
 import com.megvii.dzh.spider.po.Comment;
 import com.megvii.dzh.spider.po.Post;
 import com.megvii.dzh.spider.po.User;
 import com.megvii.dzh.spider.po.UserTbs;
 import com.megvii.dzh.spider.po.WordDivide;
+import com.megvii.dzh.spider.service.ICommentService;
+import com.megvii.dzh.spider.service.IPostService;
+import com.megvii.dzh.spider.service.IUserService;
+import com.megvii.dzh.spider.service.IUserTbsService;
+import com.megvii.dzh.spider.service.IWordDivideService;
 import lombok.extern.slf4j.Slf4j;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
@@ -27,8 +26,17 @@ import us.codecraft.webmagic.pipeline.Pipeline;
 @Slf4j
 public class PostDownloadPipeline implements Pipeline {
 
+    
     @Autowired
-    private BootConfig bootConfig;
+    private IPostService postService;
+    @Autowired
+    private ICommentService commentService;
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private IUserTbsService userTbsService;
+    @Autowired
+    private IWordDivideService wordDivideService;
 
     @Override
     public void process(ResultItems resultItems, Task task) {
@@ -39,7 +47,7 @@ public class PostDownloadPipeline implements Pipeline {
                 Post post = (Post) entry.getValue();
                 try {
                     // 另外线程入库
-                    bootConfig.getThreadPoolPost().putAnRun(post, PostSaveExcute.class);
+                    postService.insert(post);
                     // 保存分词
                     String title = post.getTitle();
                     if(StringUtils.isBlank(title)){
@@ -55,7 +63,8 @@ public class PostDownloadPipeline implements Pipeline {
                         WordDivide wordDivide = new WordDivide();
                         wordDivide.setWord(text);
                         wordDivide.setType(2);
-                        bootConfig.getThreadPoolWordDivide().putAnRun(wordDivide, WordDivideSaveExcute.class);
+                        //
+                        wordDivideService.insert(wordDivide);
                     }
                 } catch (Exception e) {
                     log.error("putAnRun error {}", url, e);
@@ -66,7 +75,7 @@ public class PostDownloadPipeline implements Pipeline {
 
                     for (Comment comment : listComment) {
                         // 另外线程入库
-                        bootConfig.getThreadCommentDivide().putAnRun(comment, CommentSaveExcute.class);
+                        commentService.insert(comment);
                         // 保存分词
                         String content = comment.getContent();
                         if(StringUtils.isBlank(content)){
@@ -81,7 +90,7 @@ public class PostDownloadPipeline implements Pipeline {
                             WordDivide wordDivide = new WordDivide();
                             wordDivide.setWord(word.getText());
                             wordDivide.setType(3);
-                            bootConfig.getThreadPoolWordDivide().putAnRun(wordDivide, WordDivideSaveExcute.class);
+                            wordDivideService.insert(wordDivide);
                         }
                     }
                 } catch (Exception e) {
@@ -93,7 +102,7 @@ public class PostDownloadPipeline implements Pipeline {
 
                     for (UserTbs userTb : userTbsList) {
                         // 另外线程入库
-                        bootConfig.getThreadUserTbsDivide().putAnRun(userTb, UserTbsSaveExcute.class);
+                        userTbsService.insert(userTb);
                     }
                 } catch (Exception e) {
                     log.error("putAnRun error {}", url, e);
@@ -102,7 +111,7 @@ public class PostDownloadPipeline implements Pipeline {
                 User user = (User) entry.getValue();
                 try {
                     // 另外线程入库
-                    bootConfig.getThreadUserDivide().putAnRun(user, UserSaveExcute.class);
+                    userService.insert(user);
                     // 保存分词
                     String title = user.getUserName();
                     List<Word> list = WordSegmenter.seg(title);
@@ -115,7 +124,8 @@ public class PostDownloadPipeline implements Pipeline {
                         WordDivide wordDivide = new WordDivide();
                         wordDivide.setWord(text);
                         wordDivide.setType(1);
-                        bootConfig.getThreadPoolWordDivide().putAnRun(wordDivide, WordDivideSaveExcute.class);
+                        //
+                        wordDivideService.insert(wordDivide);
                     }
                 } catch (Exception e) {
                     log.error("putAnRun error {}", url, e);
