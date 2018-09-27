@@ -163,18 +163,23 @@
 						{
 							// 根据名字对应到相应的系列
 							name : '温度',
+							smooth: 0.3,
 							data : tems
 						}, {
 							name : '湿度',
+							smooth: 0.3,
 							data : hums
 						}, {
 							name : '压强',
+							smooth: 0.3,
 							data : pas
 						}, {
 							name : '雨量',
+							smooth: 0.3,
 							data : rains
 						}, {
 							name : '风速',
+							smooth: 0.3,
 							data : win_sps
 						} ]
 					});
