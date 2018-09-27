@@ -4,9 +4,17 @@
   <resultMap id="BaseResultMap" type="com.megvii.dzh.spider.po.WordDivide">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="word" jdbcType="VARCHAR" property="word" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
     <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, word, type
+    id, word,time,type
   </sql>
+  
+  <select
+        id="nameValues"
+        resultType="com.megvii.dzh.spider.po.NameValue" useCache="false">
+        select * from (select word as name,count(*) as value from word_divide where type=#{type} GROUP BY word) a ORDER BY a.`value` desc  LIMIT #{limit};
+    </select>
+  
 </mapper>

@@ -62,6 +62,7 @@ public class PostDownloadPipeline implements Pipeline {
                         }
                         WordDivide wordDivide = new WordDivide();
                         wordDivide.setWord(text);
+                        wordDivide.setTime(post.getTime());
                         wordDivide.setType(2);
                         //
                         wordDivideService.insert(wordDivide);
@@ -89,6 +90,7 @@ public class PostDownloadPipeline implements Pipeline {
                             }
                             WordDivide wordDivide = new WordDivide();
                             wordDivide.setWord(word.getText());
+                            wordDivide.setTime(comment.getTime());
                             wordDivide.setType(3);
                             wordDivideService.insert(wordDivide);
                         }
