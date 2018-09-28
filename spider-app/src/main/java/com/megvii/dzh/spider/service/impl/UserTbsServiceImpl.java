@@ -1,7 +1,7 @@
  package com.megvii.dzh.spider.service.impl;
 
 import org.springframework.stereotype.Service;
-import com.megvii.dzh.spider.po.UserTbs;
+import com.megvii.dzh.spider.domain.po.UserTbs;
 import com.megvii.dzh.spider.service.IUserTbsService;
 
 @Service

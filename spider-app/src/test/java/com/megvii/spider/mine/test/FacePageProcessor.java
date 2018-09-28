@@ -2,9 +2,9 @@ package com.megvii.spider.mine.test;
 
 import java.util.Date;
 import java.util.Random;
-import com.megvii.dzh.spider.utils.CrowProxyProvider;
-import com.megvii.dzh.spider.utils.ProxyGeneratedUtil;
-import com.megvii.dzh.spider.utils.UserAgentUtil;
+import com.megvii.dzh.spider.common.utils.CrowProxyProvider;
+import com.megvii.dzh.spider.common.utils.ProxyGeneratedUtil;
+import com.megvii.dzh.spider.common.utils.UserAgentUtil;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;

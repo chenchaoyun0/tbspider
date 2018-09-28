@@ -4,7 +4,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.megvii.dzh.spider.service.IBaseService;
 import tk.mybatis.mapper.common.BaseMapper;
-
 public class BaseServiceImpl<T> implements IBaseService<T> {
 
     @Autowired

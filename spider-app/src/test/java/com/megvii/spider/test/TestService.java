@@ -1,5 +1,7 @@
 package com.megvii.spider.test;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,14 +14,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSONObject;
 import com.megvii.dzh.spider.SpiderApplication;
-import com.megvii.dzh.spider.enums.WordDivideType;
-import com.megvii.dzh.spider.po.Comment;
-import com.megvii.dzh.spider.po.NameValue;
-import com.megvii.dzh.spider.po.Post;
-import com.megvii.dzh.spider.po.User;
-import com.megvii.dzh.spider.po.WordDivide;
+import com.megvii.dzh.spider.common.enums.WordDivideType;
+import com.megvii.dzh.spider.domain.po.Comment;
+import com.megvii.dzh.spider.domain.po.Post;
+import com.megvii.dzh.spider.domain.po.User;
+import com.megvii.dzh.spider.domain.po.WordDivide;
+import com.megvii.dzh.spider.domain.vo.NameValue;
 import com.megvii.dzh.spider.service.ICommentService;
 import com.megvii.dzh.spider.service.IPostService;
 import com.megvii.dzh.spider.service.IUserService;
@@ -67,5 +70,23 @@ public class TestService {
     public void test4() {
         List<NameValue> postAndNo = postService.getPostHasRepAndNo();
         log.info("---> size {} data {}",postAndNo.size(),JSONObject.toJSONString(postAndNo));
+    }
+    @Test
+    public void test5() {
+        Post post2 = new Post();
+        post2.setId(1l);
+        List<Post> list = postService.selectList(post2);
+        log.info("---> size {} data {}",list.size());
+        for (Post post : list) {
+            Date time = post.getTime();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(time);
+            post.setYear(cal.get(Calendar.YEAR));
+            post.setMonth(cal.get(Calendar.MONTH)+1);
+            post.setDay(cal.get(Calendar.DATE));
+            post.setHour(cal.get(Calendar.HOUR_OF_DAY));
+            int up = postService.updateByPrimaryKeySelective(post);
+            log.info("---> up {}",up);
+        }
     }
 }

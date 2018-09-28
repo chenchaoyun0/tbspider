@@ -8,15 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.megvii.dzh.spider.config.BootConfig;
-import com.megvii.dzh.spider.po.NameValue;
-import com.megvii.dzh.spider.po.Record;
+import com.megvii.dzh.spider.common.config.BootConfig;
+import com.megvii.dzh.spider.common.utils.NumberUtils;
+import com.megvii.dzh.spider.domain.vo.NameValue;
+import com.megvii.dzh.spider.domain.vo.PostYears;
+import com.megvii.dzh.spider.domain.vo.Record;
 import com.megvii.dzh.spider.service.ICommentService;
 import com.megvii.dzh.spider.service.IPostService;
 import com.megvii.dzh.spider.service.IUserService;
 import com.megvii.dzh.spider.service.IUserTbsService;
 import com.megvii.dzh.spider.service.IWordDivideService;
-import com.megvii.dzh.spider.utils.NumberUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @RequestMapping("/")
@@ -92,7 +93,7 @@ public class AnalysisController {
 
     // ------------------------------***我是分割线***--------------------------------------------//
     /**
-     * 有回复帖子与没回复比例
+     * 测试曲线图
      * 
      * @return
      */
@@ -100,7 +101,6 @@ public class AnalysisController {
     public String demo() {
         return "demo";
     }
-    
     @RequestMapping(value = "/getDemo")
     @ResponseBody
     public List<Record> getDemo() {
@@ -123,6 +123,22 @@ public class AnalysisController {
         }
         
         return records;
+    }
+    
+    // ------------------------------***我是分割线***--------------------------------------------//
+    /**
+     * 年发帖量曲线图
+     * 
+     * @return
+     */
+    @RequestMapping(value = "/postYears")
+    public String postYears() {
+        return "postYears";
+    }
+    @RequestMapping(value = "/getPostYears")
+    @ResponseBody
+    public List<PostYears> getPostYears() {
+        return null;
     }
     
     // ------------------------------***我是分割线***--------------------------------------------//

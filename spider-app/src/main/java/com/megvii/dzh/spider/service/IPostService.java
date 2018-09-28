@@ -1,8 +1,8 @@
  package com.megvii.dzh.spider.service;
 
 import java.util.List;
-import com.megvii.dzh.spider.po.NameValue;
-import com.megvii.dzh.spider.po.Post;
+import com.megvii.dzh.spider.domain.po.Post;
+import com.megvii.dzh.spider.domain.vo.NameValue;
 
 public interface IPostService extends IBaseService<Post> {
     /**

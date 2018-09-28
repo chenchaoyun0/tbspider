@@ -13,19 +13,21 @@ import org.apdplat.word.WordSegmenter;
 import org.apdplat.word.segmentation.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.megvii.dzh.spider.common.utils.DateConvertUtils;
+import com.megvii.dzh.spider.domain.po.Post;
+import com.megvii.dzh.spider.domain.po.User;
+import com.megvii.dzh.spider.domain.vo.CountGroupByUser;
+import com.megvii.dzh.spider.domain.vo.NameValue;
 import com.megvii.dzh.spider.mapper.PostMapper;
 import com.megvii.dzh.spider.mapper.UserMapper;
-import com.megvii.dzh.spider.po.CountGroupByUser;
-import com.megvii.dzh.spider.po.NameValue;
-import com.megvii.dzh.spider.po.Post;
-import com.megvii.dzh.spider.po.User;
 import com.megvii.dzh.spider.service.IPostService;
-import com.megvii.dzh.spider.utils.DateConvertUtils;
 import lombok.extern.slf4j.Slf4j;
 import tk.mybatis.mapper.entity.Example;
 
 @Service
 @Slf4j
+@Transactional
 public class PostServiceImpl extends BaseServiceImpl<Post> implements IPostService {
 
     @Autowired
@@ -135,6 +137,5 @@ public class PostServiceImpl extends BaseServiceImpl<Post> implements IPostServi
 
         return null;
     }
-
 
 }

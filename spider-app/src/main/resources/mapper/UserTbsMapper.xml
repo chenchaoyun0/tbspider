@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.megvii.dzh.spider.mapper.UserTbsMapper">
-  <resultMap id="BaseResultMap" type="com.megvii.dzh.spider.po.UserTbs">
+  <resultMap id="BaseResultMap" type="com.megvii.dzh.spider.domain.po.UserTbs">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="tb_name" jdbcType="VARCHAR" property="tbName" />

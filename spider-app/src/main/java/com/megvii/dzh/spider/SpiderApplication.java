@@ -7,12 +7,8 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.ContextRefreshedEvent;
-import com.megvii.dzh.spider.utils.SpringUtils;
-import com.megvii.dzh.spider.webmagic.pipelines.PostDownloadPipeline;
-import com.megvii.dzh.spider.webmagic.processors.PostProcessor;
 import lombok.extern.slf4j.Slf4j;
 import tk.mybatis.spring.annotation.MapperScan;
-import us.codecraft.webmagic.Spider;
 
 @SpringBootApplication
 @ServletComponentScan

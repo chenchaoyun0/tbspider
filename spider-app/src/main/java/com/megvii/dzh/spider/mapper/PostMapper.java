@@ -2,8 +2,8 @@ package com.megvii.dzh.spider.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Select;
-import com.megvii.dzh.spider.po.CountGroupByUser;
-import com.megvii.dzh.spider.po.Post;
+import com.megvii.dzh.spider.domain.po.Post;
+import com.megvii.dzh.spider.domain.vo.CountGroupByUser;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface PostMapper extends Mapper<Post>{
