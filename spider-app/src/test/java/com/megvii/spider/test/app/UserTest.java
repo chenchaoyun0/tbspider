@@ -1,4 +1,4 @@
-package com.megvii.spider.test;
+package com.megvii.spider.test.app;
 
 import java.util.List;
 import org.junit.Test;

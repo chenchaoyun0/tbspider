@@ -1,4 +1,4 @@
- package com.megvii.spider.test;
+ package com.megvii.spider.test.app;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;

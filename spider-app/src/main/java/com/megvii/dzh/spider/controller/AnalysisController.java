@@ -91,6 +91,22 @@ public class AnalysisController {
         return nameValuesByYear;
     }
     // ------------------------------***我是分割线***--------------------------------------------//
+    @RequestMapping(value = "/userFansBar")
+    public String userFansBar() {
+        return "userFansBar";
+    }
+    /**
+     * 20大活跃用户，按年分组
+     * 
+     * @param years
+     * @return
+     */
+    @RequestMapping(value = "/getUserFansBar")
+    @ResponseBody
+    public List<NameValue> getUserFansBar(int limit) {
+        return userService.getUserFansBar(limit);
+    }
+    // ------------------------------***我是分割线***--------------------------------------------//
 
     /**
      * 发帖用户与不发帖比例

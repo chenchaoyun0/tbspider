@@ -1,29 +1,17 @@
-package com.megvii.spider.test;
+package com.megvii.spider.test.service;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import org.apache.commons.lang3.StringUtils;
-import org.apdplat.word.WordSegmenter;
-import org.apdplat.word.segmentation.Word;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSONObject;
 import com.megvii.dzh.spider.SpiderApplication;
 import com.megvii.dzh.spider.common.enums.WordDivideType;
-import com.megvii.dzh.spider.domain.po.Comment;
-import com.megvii.dzh.spider.domain.po.Post;
-import com.megvii.dzh.spider.domain.po.User;
-import com.megvii.dzh.spider.domain.po.WordDivide;
 import com.megvii.dzh.spider.domain.vo.NameValue;
-import com.megvii.dzh.spider.domain.vo.PostGroupByMonth;
 import com.megvii.dzh.spider.domain.vo.PostGroupByMonthVo;
 import com.megvii.dzh.spider.domain.vo.PostYears;
 import com.megvii.dzh.spider.service.ICommentService;
@@ -97,6 +85,11 @@ public class TestService {
     @Test
     public void test9() {
         List<NameValue> list = commentService.getActiveUser("2017",30);
+        log.info("---> size {} data {}",list.size(),JSONObject.toJSONString(list));
+    }
+    @Test
+    public void test10() {
+        List<NameValue> list = userService.getUserFansBar(10);
         log.info("---> size {} data {}",list.size(),JSONObject.toJSONString(list));
     }
 }

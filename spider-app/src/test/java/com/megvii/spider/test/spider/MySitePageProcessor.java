@@ -1,4 +1,4 @@
-package com.megvii.spider.mine.test;
+package com.megvii.spider.test.spider;
 
 import java.util.ArrayList;
 import java.util.Date;

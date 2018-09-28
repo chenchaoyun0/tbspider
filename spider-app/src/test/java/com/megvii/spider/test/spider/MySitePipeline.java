@@ -1,4 +1,4 @@
-package com.megvii.spider.mine.test;
+package com.megvii.spider.test.spider;
 
 import java.util.List;
 import java.util.Map;

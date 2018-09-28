@@ -27,7 +27,7 @@
 		// 指定图表的配置项和数据
 		var option = {
 			title : { //图表标题
-				text : '十大活跃用户回帖量分布'
+				text : '粉丝最多的10大用户'
 			},
 			tooltip : {
 				trigger : 'axis', //坐标轴触发提示框，多用于柱状、折线图中
@@ -37,15 +37,15 @@
 				start : 0, //默认数据初始缩放范围为10%到90%
 				end : 100
 			}, {
-				type : 'inside', //支持单独的滑动条缩放
+				type : 'inside', //支持单独的滑动人缩放
 				start : 0, //默认数据初始缩放范围为10%到90%
 				end : 100
 			} ],
 			legend : { //图表上方的类别显示
 				show : true,
-				data : [ '回帖量' ]
+				data : [ '粉丝量' ]
 			},
-			color : [ '#FF3333'//2014曲线颜色
+			color : [ '#FFDC35'//2014曲线颜色
 			],
 			toolbox : { //工具栏显示             
 				show : true,
@@ -67,9 +67,9 @@
 			{
 				//第一个（左边）Y轴，yAxisIndex为0
 				type : 'value',
-				name : '回帖量',
+				name : '粉丝量',
 				axisLabel : {
-					formatter : '{value} 条' //控制输出格式
+					formatter : '{value} 人' //控制输出格式
 				}
 			} ],
 			series : [ {
@@ -88,7 +88,7 @@
 		$.ajax({
 			type : "post",
 			async : true,
-			url : "${pageContext.request.contextPath}/getActiveUserBar",
+			url : "${pageContext.request.contextPath}/getUserFansBar",
 			data : {
 				limit : 10
 			},
@@ -110,7 +110,7 @@
 						series : [ //填入系列（内容）数据
 						{
 							// 根据名字对应到相应的系列
-							name : '回帖量',
+							name : '粉丝量',
 							data : males
 						} ]
 					});

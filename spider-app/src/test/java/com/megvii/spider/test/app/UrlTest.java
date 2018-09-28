@@ -1,4 +1,4 @@
- package com.megvii.spider.test;
+ package com.megvii.spider.test.app;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
