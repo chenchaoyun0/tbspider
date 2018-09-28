@@ -28,5 +28,17 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
         return null;
     }
 
+    @Override
+    public List<NameValue> getUserGender() {
+        try {
+            List<NameValue> list = userMapper.getUserGender();
+            log.info("---> size {} data {}", list.size());
+            return list;
+        } catch (Exception e) {
+            log.error("getUserGender error {}", e);
+        }
+        return null;
+    }
+
 
 }

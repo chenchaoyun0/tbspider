@@ -8,4 +8,6 @@ public interface IUserTbsService extends IBaseService<UserTbs> {
 
     List<NameValue> getUserLevel();
 
+    List<NameValue> getTbNameWordCloud(int limit);
+
 }

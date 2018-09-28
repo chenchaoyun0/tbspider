@@ -8,4 +8,6 @@ public interface IUserService extends IBaseService<User> {
 
     List<NameValue> getUserFansBar(int limit);
 
+    List<NameValue> getUserGender();
+
 }

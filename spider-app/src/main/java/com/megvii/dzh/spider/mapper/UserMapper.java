@@ -11,4 +11,7 @@ public interface UserMapper extends Mapper<User>{
 
     @Select("select user_name as name,fans_count as value from `user` where user_name in(SELECT user_name from user_tbs where tb_name='"+Constant.TIEBA_NAME+"') ORDER BY fans_count desc LIMIT #{0};")
     List<NameValue> getUserFansBar(int limit);
+
+    @Select("select if(gender=1,'男','女') as name,count(1) as value from `user` GROUP BY gender;")
+    List<NameValue> getUserGender();
 }

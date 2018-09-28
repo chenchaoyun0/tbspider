@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.megvii.dzh.spider.common.config.BootConfig;
 import com.megvii.dzh.spider.common.utils.NumberUtils;
 import com.megvii.dzh.spider.domain.vo.NameValue;
-import com.megvii.dzh.spider.domain.vo.PostGroupByMonth;
 import com.megvii.dzh.spider.domain.vo.PostGroupByMonthVo;
 import com.megvii.dzh.spider.domain.vo.PostYears;
 import com.megvii.dzh.spider.domain.vo.Record;
@@ -39,6 +38,11 @@ public class AnalysisController {
     @Autowired
     private IWordDivideService wordDivideService;
 
+    @RequestMapping(value = "/")
+    public String index() {
+        return "index";
+    }
+    
     @RequestMapping(value = "/postTitleWordCloud")
     public String getPostTitleWord() {
         return "postTitleWordCloud";
@@ -52,8 +56,8 @@ public class AnalysisController {
      */
     @RequestMapping(value = "/postTitleWord")
     @ResponseBody
-    public List<NameValue> postTitleWord() {
-        List<NameValue> nameValuesByYear = postService.nameValuesByYear("2018", 500);
+    public List<NameValue> postTitleWord(int year,int limit) {
+        List<NameValue> nameValuesByYear = postService.nameValuesByYear(year+"", limit);
         return nameValuesByYear;
     }
     // ------------------------------***我是分割线***--------------------------------------------//
@@ -242,22 +246,36 @@ public class AnalysisController {
         return result;
     }
     // ------------------------------***我是分割线***--------------------------------------------//
-
+    @RequestMapping(value = "/tbNameWordCloud")
+    public String tbNameWordCloud() {
+        return "tbNameWordCloud";
+    }
+    /**
+     * 用户关注贴吧词云
+     * 
+     * @param years
+     * @return
+     */
+    @RequestMapping(value = "/getTbNameWordCloud")
+    @ResponseBody
+    public List<NameValue> getTbNameWordCloud(int limit) {
+        List<NameValue> nameValuesByYear = userTbsService.getTbNameWordCloud(limit);
+        return nameValuesByYear;
+    }
 
     /**
      * 男女比例
      * 
      * @return
      */
-    @RequestMapping(value = "/gender")
-    public String getGenderEcharts() {
-        return "gender";
+    @RequestMapping(value = "/userGender")
+    public String userGender() {
+        return "userGender";
     }
 
-    @RequestMapping(value = "/getGender")
+    @RequestMapping(value = "/getUserGender")
     @ResponseBody
-    public List<NameValue> getGender() {
-        List<NameValue> result = new ArrayList<>();
-        return result;
+    public List<NameValue> getUserGender() {
+        return userService.getUserGender();
     }
 }

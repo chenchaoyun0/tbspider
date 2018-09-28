@@ -92,4 +92,9 @@ public class TestService {
         List<NameValue> list = userService.getUserFansBar(10);
         log.info("---> size {} data {}",list.size(),JSONObject.toJSONString(list));
     }
+    @Test
+    public void test11() {
+        List<NameValue> list = userTbsService.getTbNameWordCloud(300);
+        log.info("---> size {} data {}",list.size(),JSONObject.toJSONString(list));
+    }
 }

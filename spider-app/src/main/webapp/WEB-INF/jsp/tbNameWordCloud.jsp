@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+<!-- 引入jquery.js -->
 <script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
 <script src='https://cdn.bootcss.com/echarts/3.7.0/echarts.simple.js'></script>
 <script src='/js/echarts-wordcloud.js'></script>
@@ -71,10 +72,9 @@ html, body, #main {
 		$.ajax({
 			type : "post",
 			async : true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-			url : "postTitleWord", //请求发送到
+			url : "getTbNameWordCloud", //请求发送到TestServlet处
 			data : {
-				year : 2018,
-				limit : 40
+				limit : 100
 			},
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
