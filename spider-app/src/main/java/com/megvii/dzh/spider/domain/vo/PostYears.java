@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
  public class PostYears {
-    private int postCount;
-    private String year;
+    private int count;
+    private String data;
 }

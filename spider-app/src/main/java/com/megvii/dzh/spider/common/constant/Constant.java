@@ -11,5 +11,5 @@ public class Constant {
     /**
      * 爬虫贴吧名称
      */
-    public static final String TIEBA_NAME = "太原理工大学";
+    public static final String TIEBA_NAME = "太原工业学院";
 }

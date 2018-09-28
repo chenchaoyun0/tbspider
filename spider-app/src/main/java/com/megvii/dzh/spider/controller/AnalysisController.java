@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.megvii.dzh.spider.common.config.BootConfig;
 import com.megvii.dzh.spider.common.utils.NumberUtils;
 import com.megvii.dzh.spider.domain.vo.NameValue;
+import com.megvii.dzh.spider.domain.vo.PostGroupByMonth;
+import com.megvii.dzh.spider.domain.vo.PostGroupByMonthVo;
 import com.megvii.dzh.spider.domain.vo.PostYears;
 import com.megvii.dzh.spider.domain.vo.Record;
 import com.megvii.dzh.spider.service.ICommentService;
@@ -52,6 +54,40 @@ public class AnalysisController {
     @ResponseBody
     public List<NameValue> postTitleWord() {
         List<NameValue> nameValuesByYear = postService.nameValuesByYear("2018", 500);
+        return nameValuesByYear;
+    }
+    // ------------------------------***我是分割线***--------------------------------------------//
+    @RequestMapping(value = "/activeUser")
+    public String activeUser() {
+        return "activeUser";
+    }
+    /**
+     * 20大活跃用户，按年分组
+     * 
+     * @param years
+     * @return
+     */
+    @RequestMapping(value = "/getActiveUser")
+    @ResponseBody
+    public List<NameValue> getActiveUser(String year,int limit) {
+        List<NameValue> nameValuesByYear = commentService.getActiveUser(year,limit);
+        return nameValuesByYear;
+    }
+    // ------------------------------***我是分割线***--------------------------------------------//
+    @RequestMapping(value = "/activeUserBar")
+    public String activeUserBar() {
+        return "activeUserBar";
+    }
+    /**
+     * 20大活跃用户，按年分组
+     * 
+     * @param years
+     * @return
+     */
+    @RequestMapping(value = "/getActiveUserBar")
+    @ResponseBody
+    public List<NameValue> getActiveUserBar(int limit) {
+        List<NameValue> nameValuesByYear = commentService.getActiveUserBar(limit);
         return nameValuesByYear;
     }
     // ------------------------------***我是分割线***--------------------------------------------//
@@ -135,12 +171,60 @@ public class AnalysisController {
     public String postYears() {
         return "postYears";
     }
-    @RequestMapping(value = "/getPostYears")
+    @RequestMapping(value = "/postMonth")
+    public String postMonth() {
+        return "postMonth";
+    }
+    @RequestMapping(value = "/postHours")
+    public String postHours() {
+        return "postHours";
+    }
+    @RequestMapping(value = "/getPostGroupBy")
     @ResponseBody
-    public List<PostYears> getPostYears() {
-        return null;
+    public List<PostYears> getPostGroupBy(String groupBy) {
+       return postService.getPostGroupBy(groupBy);
     }
     
+    @RequestMapping(value = "/getPostGroupByMonth")
+    @ResponseBody
+    public List<PostGroupByMonthVo> getPostGroupByMonth() {
+        return postService.getPostGroupByMonth();
+    }
+    
+    // ------------------------------***我是分割线***--------------------------------------------//
+    /**
+     * 用户等级分布
+     * 
+     * @return
+     */
+    @RequestMapping(value = "/userLevel")
+    public String userLevel() {
+        return "userLevel";
+    }
+
+    @RequestMapping(value = "/getUserLevel")
+    @ResponseBody
+    public List<NameValue> getUserLevel() {
+        List<NameValue> result = userTbsService.getUserLevel();
+        return result;
+    }
+    // ------------------------------***我是分割线***--------------------------------------------//
+    /**
+     * 年度的十大热帖
+     * 
+     * @return
+     */
+    @RequestMapping(value = "/postTitlesyear")
+    public String postTitlesyear() {
+        return "postTitlesyear";
+    }
+    
+    @RequestMapping(value = "/getPostTitlesyear")
+    @ResponseBody
+    public List<NameValue> getPostTitlesyear(String year) {
+        List<NameValue> result = postService.getPostTitlesyear(year);
+        return result;
+    }
     // ------------------------------***我是分割线***--------------------------------------------//
 
 

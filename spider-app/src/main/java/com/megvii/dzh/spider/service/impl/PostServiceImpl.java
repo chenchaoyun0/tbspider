@@ -19,6 +19,9 @@ import com.megvii.dzh.spider.domain.po.Post;
 import com.megvii.dzh.spider.domain.po.User;
 import com.megvii.dzh.spider.domain.vo.CountGroupByUser;
 import com.megvii.dzh.spider.domain.vo.NameValue;
+import com.megvii.dzh.spider.domain.vo.PostGroupByMonth;
+import com.megvii.dzh.spider.domain.vo.PostGroupByMonthVo;
+import com.megvii.dzh.spider.domain.vo.PostYears;
 import com.megvii.dzh.spider.mapper.PostMapper;
 import com.megvii.dzh.spider.mapper.UserMapper;
 import com.megvii.dzh.spider.service.IPostService;
@@ -125,7 +128,7 @@ public class PostServiceImpl extends BaseServiceImpl<Post> implements IPostServi
             post.setReplyNum(0);
             int postNoRepCount = postMapper.selectCount(post);
             log.info("---> postNoRepCount {}", postNoRepCount);
-            int postHasRepCount=postCount-postNoRepCount;
+            int postHasRepCount = postCount - postNoRepCount;
             //
             List<NameValue> result = new ArrayList<>();
             result.add(new NameValue("有回复的帖子", postHasRepCount));
@@ -138,4 +141,61 @@ public class PostServiceImpl extends BaseServiceImpl<Post> implements IPostServi
         return null;
     }
 
+    @Override
+    public List<PostYears> getPostGroupBy(String groupBy) {
+        try {
+            List<PostYears> list = postMapper.getPostGroupBy(groupBy);
+            log.info("---> size {} data {}", list.size());
+            return list;
+        } catch (Exception e) {
+            log.error("getPostYears error {}", e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<PostGroupByMonthVo> getPostGroupByMonth() {
+        try {
+            List<PostGroupByMonthVo> list = new ArrayList<>();
+            for (int j = 1; j <= 12; j++) {
+                PostGroupByMonthVo postGroupByMonthVo = new PostGroupByMonthVo();
+                postGroupByMonthVo.setMonth(j);
+                //
+                PostGroupByMonth groupByMonth = postMapper.getPostGroupByMonth(2014, j);
+                postGroupByMonthVo.setCount2014(groupByMonth == null ? 0 : groupByMonth.getCount());
+                //
+                groupByMonth = postMapper.getPostGroupByMonth(2015, j);
+                postGroupByMonthVo.setCount2015(groupByMonth == null ? 0 : groupByMonth.getCount());
+                //
+                groupByMonth = postMapper.getPostGroupByMonth(2016, j);
+                postGroupByMonthVo.setCount2016(groupByMonth == null ? 0 : groupByMonth.getCount());
+                //
+                groupByMonth = postMapper.getPostGroupByMonth(2017, j);
+                postGroupByMonthVo.setCount2017(groupByMonth == null ? 0 : groupByMonth.getCount());
+                //
+                groupByMonth = postMapper.getPostGroupByMonth(2018, j);
+                postGroupByMonthVo.setCount2018(groupByMonth == null ? 0 : groupByMonth.getCount());
+                //
+                list.add(postGroupByMonthVo);
+            }
+
+            log.info("---> size {} data {}", list.size());
+            return list;
+        } catch (Exception e) {
+            log.error("getPostGroupByMonth error {}", e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<NameValue> getPostTitlesyear(String year) {
+        try {
+            List<NameValue> list = postMapper.getPostTitlesyear(year);
+            log.info("---> size {} data {}", list.size());
+            return list;
+        } catch (Exception e) {
+            log.error("getPostYears error {}", e);
+        }
+        return null;
+    }
 }

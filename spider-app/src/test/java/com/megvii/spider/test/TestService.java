@@ -23,6 +23,9 @@ import com.megvii.dzh.spider.domain.po.Post;
 import com.megvii.dzh.spider.domain.po.User;
 import com.megvii.dzh.spider.domain.po.WordDivide;
 import com.megvii.dzh.spider.domain.vo.NameValue;
+import com.megvii.dzh.spider.domain.vo.PostGroupByMonth;
+import com.megvii.dzh.spider.domain.vo.PostGroupByMonthVo;
+import com.megvii.dzh.spider.domain.vo.PostYears;
 import com.megvii.dzh.spider.service.ICommentService;
 import com.megvii.dzh.spider.service.IPostService;
 import com.megvii.dzh.spider.service.IUserService;
@@ -73,20 +76,27 @@ public class TestService {
     }
     @Test
     public void test5() {
-        Post post2 = new Post();
-        post2.setId(1l);
-        List<Post> list = postService.selectList(post2);
-        log.info("---> size {} data {}",list.size());
-        for (Post post : list) {
-            Date time = post.getTime();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(time);
-            post.setYear(cal.get(Calendar.YEAR));
-            post.setMonth(cal.get(Calendar.MONTH)+1);
-            post.setDay(cal.get(Calendar.DATE));
-            post.setHour(cal.get(Calendar.HOUR_OF_DAY));
-            int up = postService.updateByPrimaryKeySelective(post);
-            log.info("---> up {}",up);
-        }
+        List<PostYears> postGroupBy = postService.getPostGroupBy("year");
+        log.info("---> size {} data {}",postGroupBy.size(),JSONObject.toJSONString(postGroupBy));
+    }
+    @Test
+    public void test6() {
+        List<PostGroupByMonthVo> list = postService.getPostGroupByMonth();
+        log.info("---> size {} data {}",list.size(),JSONObject.toJSONString(list));
+    }
+    @Test
+    public void test7() {
+        List<NameValue> list = userTbsService.getUserLevel();
+        log.info("---> size {} data {}",list.size(),JSONObject.toJSONString(list));
+    }
+    @Test
+    public void test8() {
+        List<NameValue> list = postService.getPostTitlesyear("2014");
+        log.info("---> size {} data {}",list.size(),JSONObject.toJSONString(list));
+    }
+    @Test
+    public void test9() {
+        List<NameValue> list = commentService.getActiveUser("2017",30);
+        log.info("---> size {} data {}",list.size(),JSONObject.toJSONString(list));
     }
 }

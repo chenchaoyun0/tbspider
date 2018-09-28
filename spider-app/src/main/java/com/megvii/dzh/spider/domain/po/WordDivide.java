@@ -1,6 +1,5 @@
 package com.megvii.dzh.spider.domain.po;
 
-import java.util.Date;
 import javax.persistence.Id;
 import lombok.Data;
 
@@ -12,6 +11,4 @@ public class WordDivide {
     private String word;
 
     private Integer type;
-    
-    private Date time;
 }

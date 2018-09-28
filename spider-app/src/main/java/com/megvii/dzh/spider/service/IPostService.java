@@ -3,6 +3,9 @@
 import java.util.List;
 import com.megvii.dzh.spider.domain.po.Post;
 import com.megvii.dzh.spider.domain.vo.NameValue;
+import com.megvii.dzh.spider.domain.vo.PostGroupByMonth;
+import com.megvii.dzh.spider.domain.vo.PostGroupByMonthVo;
+import com.megvii.dzh.spider.domain.vo.PostYears;
 
 public interface IPostService extends IBaseService<Post> {
     /**
@@ -19,4 +22,11 @@ public interface IPostService extends IBaseService<Post> {
     List<NameValue> getPostAndNo();
     
     List<NameValue> getPostHasRepAndNo();
+    
+    List<PostYears> getPostGroupBy(String groupBy);
+    
+    List<PostGroupByMonthVo> getPostGroupByMonth();
+    
+    List<NameValue> getPostTitlesyear(String year);
+    
 }

@@ -1,5 +1,7 @@
 package com.megvii.dzh.spider.webmagic.pipelines;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +48,13 @@ public class PostDownloadPipeline implements Pipeline {
             if (entry.getKey().equals("post")) {
                 Post post = (Post) entry.getValue();
                 try {
+                    Date time = post.getTime();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(time);
+                    post.setYear(cal.get(Calendar.YEAR));
+                    post.setMonth(cal.get(Calendar.MONTH)+1);
+                    post.setDay(cal.get(Calendar.DATE));
+                    post.setHour(cal.get(Calendar.HOUR_OF_DAY));
                     // 另外线程入库
                     postService.insert(post);
                     // 保存分词
@@ -62,7 +71,6 @@ public class PostDownloadPipeline implements Pipeline {
                         }
                         WordDivide wordDivide = new WordDivide();
                         wordDivide.setWord(text);
-                        wordDivide.setTime(post.getTime());
                         wordDivide.setType(2);
                         //
                         wordDivideService.insert(wordDivide);
@@ -90,7 +98,6 @@ public class PostDownloadPipeline implements Pipeline {
                             }
                             WordDivide wordDivide = new WordDivide();
                             wordDivide.setWord(word.getText());
-                            wordDivide.setTime(comment.getTime());
                             wordDivide.setType(3);
                             wordDivideService.insert(wordDivide);
                         }
