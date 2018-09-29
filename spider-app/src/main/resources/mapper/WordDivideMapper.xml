@@ -9,11 +9,5 @@
   <sql id="Base_Column_List">
     id, word,type
   </sql>
-  
-  <select
-        id="nameValues"
-        resultType="com.megvii.dzh.spider.domain.vo.NameValue" useCache="false">
-        select * from (select word as name,count(*) as value from word_divide where type=#{type} GROUP BY word) a ORDER BY a.`value` desc  LIMIT #{limit};
-    </select>
-  
+
 </mapper>
