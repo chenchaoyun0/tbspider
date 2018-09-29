@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : ccy004-root
-Source Server Version : 50717
-Source Host           : 39.107.126.75:3306
+Source Server         : 127.0.0.1-root
+Source Server Version : 50723
+Source Host           : 127.0.0.1:3306
 Source Database       : tbspider
 
 Target Server Type    : MYSQL
-Target Server Version : 50717
+Target Server Version : 50723
 File Encoding         : 65001
 
-Date: 2018-09-26 11:48:19
+Date: 2018-09-30 00:05:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,7 +29,7 @@ CREATE TABLE `comment` (
   PRIMARY KEY (`id`),
   KEY `user_name_idx` (`user_name`),
   KEY `title_idx` (`post_url`)
-) ENGINE=InnoDB AUTO_INCREMENT=959138 DEFAULT CHARSET=utf8mb4 COMMENT='回帖表';
+) ENGINE=InnoDB AUTO_INCREMENT=1069965 DEFAULT CHARSET=utf8mb4 COMMENT='回帖表';
 
 -- ----------------------------
 -- Table structure for post
@@ -44,10 +44,14 @@ CREATE TABLE `post` (
   `reply_num` int(10) DEFAULT NULL COMMENT '回复数',
   `type` int(1) DEFAULT '1' COMMENT '1-普通帖,2-精华帖',
   `time` datetime DEFAULT NULL COMMENT '发帖时间',
+  `year` int(4) DEFAULT NULL,
+  `month` int(2) DEFAULT NULL,
+  `day` int(2) DEFAULT NULL,
+  `hour` int(2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_name_idx` (`user_name`),
   KEY `title_idx` (`post_url`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=93560 DEFAULT CHARSET=utf8mb4 COMMENT='帖子表';
+) ENGINE=InnoDB AUTO_INCREMENT=94542 DEFAULT CHARSET=utf8mb4 COMMENT='帖子表';
 
 -- ----------------------------
 -- Table structure for user
@@ -65,7 +69,7 @@ CREATE TABLE `user` (
   `user_home_url` varchar(200) DEFAULT NULL COMMENT '用户贴吧主页地址',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_idx` (`user_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=63291 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=32737 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- ----------------------------
 -- Table structure for user_tbs
@@ -79,7 +83,7 @@ CREATE TABLE `user_tbs` (
   PRIMARY KEY (`id`),
   KEY `user_name_idx` (`user_name`) USING BTREE,
   KEY `tb_name_idx` (`tb_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=190780 DEFAULT CHARSET=utf8mb4 COMMENT='用户关注贴吧表';
+) ENGINE=InnoDB AUTO_INCREMENT=97209 DEFAULT CHARSET=utf8mb4 COMMENT='用户关注贴吧表';
 
 -- ----------------------------
 -- Table structure for word_divide
@@ -91,4 +95,4 @@ CREATE TABLE `word_divide` (
   `type` int(1) DEFAULT NULL COMMENT '1-用户,2-帖子标题,3-回帖内容',
   PRIMARY KEY (`id`),
   KEY `index1` (`type`,`word`)
-) ENGINE=InnoDB AUTO_INCREMENT=5959733 DEFAULT CHARSET=utf8mb4 COMMENT='分词表';
+) ENGINE=InnoDB AUTO_INCREMENT=6611789 DEFAULT CHARSET=utf8mb4 COMMENT='分词表';
