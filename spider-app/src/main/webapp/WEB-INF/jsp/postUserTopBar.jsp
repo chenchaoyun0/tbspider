@@ -37,7 +37,7 @@
 				start : 0, //默认数据初始缩放范围为10%到90%
 				end : 100
 			}, {
-				type : 'inside', //支持单独的滑动人缩放
+				type : 'inside', //支持单独的滑动帖缩放
 				start : 0, //默认数据初始缩放范围为10%到90%
 				end : 100
 			} ],
@@ -69,7 +69,7 @@
 				type : 'value',
 				name : '发帖量',
 				axisLabel : {
-					formatter : '{value} 人' //控制输出格式
+					formatter : '{value} 帖' //控制输出格式
 				}
 			} ],
 			series : [ {

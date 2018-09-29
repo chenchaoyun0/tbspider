@@ -249,6 +249,5 @@
 
     <modules>
         <module>spider-app</module>
-        <module>analysis-web</module>
     </modules>
 </project>
