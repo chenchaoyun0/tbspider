@@ -37,6 +37,11 @@ public class BootConfig {
   @Value("${site.sleep.time}")
   private String siteSleepTime;
   /**
+   * 抓取间隔
+   */
+  @Value("${spider.post.size:100000}")
+  private int spiderPostSize;
+  /**
    *
    */
   @Autowired

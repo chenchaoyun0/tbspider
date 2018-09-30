@@ -1,19 +1,17 @@
 package com.megvii.spider.test.spider;
 
+import com.megvii.dzh.spider.common.utils.ProxyGeneratedUtil;
+import com.megvii.dzh.spider.common.utils.URLGeneratedUtil;
+import com.megvii.dzh.spider.common.utils.UserAgentUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import com.megvii.dzh.spider.common.utils.CrowProxyProvider;
-import com.megvii.dzh.spider.common.utils.ProxyGeneratedUtil;
-import com.megvii.dzh.spider.common.utils.URLGeneratedUtil;
-import com.megvii.dzh.spider.common.utils.UserAgentUtil;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.processor.PageProcessor;
-import us.codecraft.webmagic.proxy.Proxy;
 import us.codecraft.webmagic.selector.Selectable;
 
 public class MySitePageProcessor implements PageProcessor {
@@ -76,7 +74,7 @@ public class MySitePageProcessor implements PageProcessor {
     public static void main(String[] args) {
         HttpClientDownloader httpClientDownloader = new HttpClientDownloader();
         // 设置动态转发代理，使用定制的ProxyProvider
-        httpClientDownloader.setProxyProvider(CrowProxyProvider.from(new Proxy("forward.xdaili.cn", 80)));
+        //httpClientDownloader.setProxyProvider(CrowProxyProvider.from(new Proxy("forward.xdaili.cn", 80)));
         Spider.create(new MySitePageProcessor())//
                 .addUrl("http://www.shopbop.ink/bookmanager/indexHome?pageNo=119&")//
                 .addPipeline(new MySitePipeline())//

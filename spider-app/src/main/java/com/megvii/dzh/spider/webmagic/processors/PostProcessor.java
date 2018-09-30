@@ -1,11 +1,13 @@
 package com.megvii.dzh.spider.webmagic.processors;
 
 import com.alibaba.fastjson.JSONObject;
+import com.megvii.dzh.spider.common.config.BootConfig;
 import com.megvii.dzh.spider.common.constant.Constant;
 import com.megvii.dzh.spider.common.utils.CrowProxyProvider;
 import com.megvii.dzh.spider.common.utils.DateConvertUtils;
 import com.megvii.dzh.spider.common.utils.ProxyGeneratedUtil;
 import com.megvii.dzh.spider.common.utils.SpiderFileUtils;
+import com.megvii.dzh.spider.common.utils.SpringUtils;
 import com.megvii.dzh.spider.common.utils.URLGeneratedUtil;
 import com.megvii.dzh.spider.domain.po.Comment;
 import com.megvii.dzh.spider.domain.po.Post;
@@ -15,7 +17,6 @@ import com.megvii.dzh.spider.domain.vo.PostUser;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -53,23 +54,25 @@ public class PostProcessor implements PageProcessor {
   private static final String USER_HOME = "/home/main(.*?)";
 
   /**
-   * 爬取起始页
+   * 爬取起始页，每页为50条帖子
    */
   private long pageNo = 50;
-  /**
-   * 爬取多少页帖子,百度贴吧封顶展示的就只有到9w数据
-   */
-  private long pageSize = 100000;
 
+  private BootConfig bootConfig = SpringUtils.getBean(BootConfig.class);
+
+
+  /**
+   * 更换字段agent 有可能变成手机客户端，影响爬虫
+   */
   private static final String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:24.0) Gecko/20100101";
 
   /**
    * 抓取网站的相关配置，包括编码、抓取间隔、重试次数、代理、UserAgent等
    */
   private Site site = Site.me()//
-      .addHeader("Proxy-Authorization", ProxyGeneratedUtil
-          .authHeader(Constant.ORDER_NUM, Constant.SECRET,
-              (int) (new Date().getTime() / 1000)))// 设置代理
+      .addHeader("Proxy-Authorization", //
+          ProxyGeneratedUtil.authHeader(Constant.ORDER_NUM, Constant.SECRET,
+              (int) (System.currentTimeMillis() / 1000)))//
       .setDisableCookieManagement(true).setCharset("UTF-8")//
       .setTimeOut(60000)//
       .setRetryTimes(10)//
@@ -145,7 +148,7 @@ public class PostProcessor implements PageProcessor {
         /**
          * 将所有帖子页面加入队列
          */
-        if (pageNo < pageSize) {
+        if (pageNo < bootConfig.getSpiderPostSize()) {
           log.info("---------> 继续爬取第 {} 页", pageNo / 50);
           // 将贴吧名编码
           String tieBaName = URLEncoder.encode(Constant.getTbName(), "UTF-8");

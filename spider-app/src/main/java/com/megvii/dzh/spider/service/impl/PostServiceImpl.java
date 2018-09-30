@@ -95,7 +95,7 @@ public class PostServiceImpl extends BaseServiceImpl<Post> implements IPostServi
         }
       });
 
-      if (limit > 0) {
+      if (limit > 0&&nameValues.size()>limit) {
         nameValues = nameValues.subList(0, Integer.parseInt(limit + ""));
       }
 

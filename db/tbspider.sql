@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50723
 File Encoding         : 65001
 
-Date: 2018-09-30 00:05:17
+Date: 2018-10-01 00:51:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,7 +29,7 @@ CREATE TABLE `comment` (
   PRIMARY KEY (`id`),
   KEY `user_name_idx` (`user_name`),
   KEY `title_idx` (`post_url`)
-) ENGINE=InnoDB AUTO_INCREMENT=1069965 DEFAULT CHARSET=utf8mb4 COMMENT='回帖表';
+) ENGINE=InnoDB AUTO_INCREMENT=374835 DEFAULT CHARSET=utf8mb4 COMMENT='回帖表';
 
 -- ----------------------------
 -- Table structure for post
@@ -51,7 +51,7 @@ CREATE TABLE `post` (
   PRIMARY KEY (`id`),
   KEY `user_name_idx` (`user_name`),
   KEY `title_idx` (`post_url`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=94542 DEFAULT CHARSET=utf8mb4 COMMENT='帖子表';
+) ENGINE=InnoDB AUTO_INCREMENT=46200 DEFAULT CHARSET=utf8mb4 COMMENT='帖子表';
 
 -- ----------------------------
 -- Table structure for user
@@ -69,7 +69,7 @@ CREATE TABLE `user` (
   `user_home_url` varchar(200) DEFAULT NULL COMMENT '用户贴吧主页地址',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_idx` (`user_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=32737 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=107058 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- ----------------------------
 -- Table structure for user_tbs
@@ -83,7 +83,7 @@ CREATE TABLE `user_tbs` (
   PRIMARY KEY (`id`),
   KEY `user_name_idx` (`user_name`) USING BTREE,
   KEY `tb_name_idx` (`tb_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=97209 DEFAULT CHARSET=utf8mb4 COMMENT='用户关注贴吧表';
+) ENGINE=InnoDB AUTO_INCREMENT=318826 DEFAULT CHARSET=utf8mb4 COMMENT='用户关注贴吧表';
 
 -- ----------------------------
 -- Table structure for word_divide
@@ -95,4 +95,4 @@ CREATE TABLE `word_divide` (
   `type` int(1) DEFAULT NULL COMMENT '1-用户,2-帖子标题,3-回帖内容',
   PRIMARY KEY (`id`),
   KEY `index1` (`type`,`word`)
-) ENGINE=InnoDB AUTO_INCREMENT=6611789 DEFAULT CHARSET=utf8mb4 COMMENT='分词表';
+) ENGINE=InnoDB AUTO_INCREMENT=3741879 DEFAULT CHARSET=utf8mb4 COMMENT='分词表';
