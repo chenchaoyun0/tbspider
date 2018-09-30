@@ -1,5 +1,6 @@
 package com.megvii.dzh.perfrom.concurrent.pool;
 
+import io.netty.util.concurrent.DefaultThreadFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import com.megvii.dzh.perfrom.configuration.SystemConfig;
 import lombok.extern.slf4j.Slf4j;
+
 @Component("threadPool")
 @Scope("prototype")
 @Slf4j
@@ -30,11 +32,14 @@ public class ThreadPool<T> {
    */
   @PostConstruct
   public void init() {
-    log.info("初始化线程池组件，数据队列大小为：" + systemConfig.arrayBlockingQueueSize + ",线程池大小："
-        + systemConfig.poolSize);
+    log.info("初始化线程池组件，数据队列大小为：" + systemConfig.getArrayBlockingQueueSize() + ",线程池大小："
+        + systemConfig.getPoolSize());
+    // 创建阻塞队列对象
     this.arrayBlockingQueue = new ArrayBlockingQueue<>(
-        systemConfig.arrayBlockingQueueSize); // 创建阻塞队列对象
-    this.cachedThreadPool = Executors.newCachedThreadPool(); // 定义线程池
+        systemConfig.getArrayBlockingQueueSize());
+    // 定义线程池
+    this.cachedThreadPool = Executors
+        .newFixedThreadPool(systemConfig.getPoolSize(), new DefaultThreadFactory("saveExecutor"));
   }
 
   /**
@@ -57,7 +62,7 @@ public class ThreadPool<T> {
     // 1.向下载队列中添加数据
     arrayBlockingQueue.put(t);
     // 2.检查当前唤醒线程数，是否大于当前总线程数，若不大于则唤醒一个线程。
-    if (((ThreadPoolExecutor) cachedThreadPool).getActiveCount() < systemConfig.poolSize) {
+    if (((ThreadPoolExecutor) cachedThreadPool).getActiveCount() < systemConfig.getPoolSize()) {
       runThread(clazz);
     }
     return true;
