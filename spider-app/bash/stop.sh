@@ -3,4 +3,4 @@ PID=$(cat ./.pid)
 sudo kill -TERM $PID
 sleep 2
 echo "app is stopped!"
-ps -ef |grep spiderboot
+ps -ef |grep spider-app
