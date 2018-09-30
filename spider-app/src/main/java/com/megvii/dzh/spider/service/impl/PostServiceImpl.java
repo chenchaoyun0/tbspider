@@ -35,13 +35,15 @@ public class PostServiceImpl extends BaseServiceImpl<Post> implements IPostServi
 
   @Autowired
   private PostMapper postMapper;
+
   @Autowired
   private UserMapper userMapper;
 
+
   @Override
-  public List<NameValue> getUserFansBar(int limit) {
+  public List<NameValue> getPostUserTopBar(int limit) {
     try {
-      List<NameValue> list = postMapper.getUserFansBar(limit);
+      List<NameValue> list = postMapper.getPostUserTopBar(limit);
       log.info("---> size {} data {}", list.size());
       return list;
     } catch (Exception e) {

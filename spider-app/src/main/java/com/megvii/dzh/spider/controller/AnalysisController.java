@@ -135,7 +135,7 @@ public class AnalysisController {
   @RequestMapping(value = "/getPostUserTopBar")
   @ResponseBody
   public List<NameValue> getPostUserTopBar(int limit) {
-    return postService.getUserFansBar(limit);
+    return postService.getPostUserTopBar(limit);
   }
   // ------------------------------***我是分割线***--------------------------------------------//
 

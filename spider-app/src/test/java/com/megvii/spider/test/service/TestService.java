@@ -89,6 +89,7 @@ public class TestService {
   public void test8() {
     List<NameValue> list = postService.getPostTitlesyear("2014");
     log.info("---> size {} data {}", list.size(), JSONObject.toJSONString(list));
+
   }
 
   @Test
@@ -106,6 +107,30 @@ public class TestService {
   @Test
   public void test11() {
     List<NameValue> list = userTbsService.getTbNameWordCloud(300);
+    log.info("---> size {} data {}", list.size(), JSONObject.toJSONString(list));
+  }
+
+  @Test
+  public void test12() {
+    List<NameValue> list = userService.getUserGender();
+    log.info("---> size {} data {}", list.size(), JSONObject.toJSONString(list));
+  }
+
+  @Test
+  public void test13() {
+    List<NameValue> list = userService.getUsertbAge(10);
+    log.info("---> size {} data {}", list.size(), JSONObject.toJSONString(list));
+  }
+
+  @Test
+  public void test14() {
+    List<NameValue> list = postService.getPostUserTopBar(10);
+    log.info("---> size {} data {}", list.size(), JSONObject.toJSONString(list));
+  }
+
+  @Test
+  public void test15() {
+    List<NameValue> list = wordDivideService.nameValues(WordDivideType.CONTENT, 20);
     log.info("---> size {} data {}", list.size(), JSONObject.toJSONString(list));
   }
 }
