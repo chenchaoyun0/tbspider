@@ -1,6 +1,5 @@
 package com.megvii.dzh.spider.mapper;
 
-import com.megvii.dzh.spider.common.constant.Constant;
 import com.megvii.dzh.spider.domain.po.User;
 import com.megvii.dzh.spider.domain.vo.NameValue;
 import java.util.List;
@@ -10,9 +9,8 @@ import tk.mybatis.mapper.common.Mapper;
 public interface UserMapper extends Mapper<User> {
 
   @Select(
-      "select user_name as name,fans_count as value from `user` where user_name in(SELECT user_name from user_tbs where tb_name='"
-          + Constant.TIEBA_NAME + "') ORDER BY fans_count desc LIMIT #{0};")
-  List<NameValue> getUserFansBar(int limit);
+      "select user_name as name,fans_count as value from `user` where user_name in(SELECT user_name from user_tbs where tb_name=#{1}) ORDER BY fans_count desc LIMIT #{0};")
+  List<NameValue> getUserFansBar(int limit,String tbName);
 
   @Select("select if(gender=1,'男','女') as name,count(1) as value from `user` GROUP BY gender;")
   List<NameValue> getUserGender();

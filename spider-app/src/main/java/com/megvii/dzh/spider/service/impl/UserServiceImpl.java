@@ -1,5 +1,6 @@
 package com.megvii.dzh.spider.service.impl;
 
+import com.megvii.dzh.spider.common.constant.Constant;
 import com.megvii.dzh.spider.domain.po.User;
 import com.megvii.dzh.spider.domain.vo.NameValue;
 import com.megvii.dzh.spider.mapper.UserMapper;
@@ -31,7 +32,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
   @Override
   public List<NameValue> getUserFansBar(int limit) {
     try {
-      List<NameValue> list = userMapper.getUserFansBar(limit);
+      List<NameValue> list = userMapper.getUserFansBar(limit,Constant.getTbName());
       log.info("---> size {} data {}", list.size());
       return list;
     } catch (Exception e) {

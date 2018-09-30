@@ -39,6 +39,7 @@ public class AnalysisController {
 
   @RequestMapping(value = "/")
   public String index() {
+    log.info("===========index=============");
     return "index";
   }
 

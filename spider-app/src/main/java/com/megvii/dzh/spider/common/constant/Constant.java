@@ -11,5 +11,13 @@ public class Constant {
     /**
      * 爬虫贴吧名称
      */
-    public static final String TIEBA_NAME = "太原工业学院";
+    public static String tbName = "太原工业学院";
+
+    public static String getTbName() {
+        return tbName;
+    }
+
+    public static void setTbName(String tbName) {
+        Constant.tbName = tbName;
+    }
 }

@@ -7,15 +7,20 @@ import lombok.Data;
 @Component
 @Data
 public class BootConfig {
-  /**
-   * 串口名称
-   */
+
   @Value("${server.port}")
   private String serverPort;
-  
+  /**
+   * 爬取的线程数
+   */
   @Value("${spider.threads:100}")
   private int spiderThreads;
-  
+  /**
+   * 爬取的贴吧名，没有配置则获取constant 里的名字
+   */
+  @Value("${spider.tb.name}")
+  private String spiderTbName;
+
   /**
    * 重试次数
    */
