@@ -4,6 +4,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.megvii.dzh.spider.common.config.BootConfig;
 import com.megvii.dzh.spider.common.constant.Constant;
 import com.megvii.dzh.spider.common.utils.SpringUtils;
+import com.megvii.dzh.spider.domain.po.Comment;
+import com.megvii.dzh.spider.domain.po.Post;
+import com.megvii.dzh.spider.domain.po.User;
+import com.megvii.dzh.spider.domain.po.UserTbs;
+import com.megvii.dzh.spider.domain.po.WordDivide;
+import com.megvii.dzh.spider.service.ICommentService;
+import com.megvii.dzh.spider.service.IPostService;
+import com.megvii.dzh.spider.service.IUserService;
+import com.megvii.dzh.spider.service.IUserTbsService;
+import com.megvii.dzh.spider.service.IWordDivideService;
 import com.megvii.dzh.spider.webmagic.pipelines.PostDownloadPipeline;
 import com.megvii.dzh.spider.webmagic.processors.PostProcessor;
 import io.swagger.annotations.Api;
@@ -28,6 +38,17 @@ public class SpiderController {
   @Autowired
   private BootConfig bootConfig;
 
+  @Autowired
+  private IPostService postService;
+  @Autowired
+  private ICommentService commentService;
+  @Autowired
+  private IUserService userService;
+  @Autowired
+  private IUserTbsService userTbsService;
+  @Autowired
+  private IWordDivideService wordDivideService;
+
   private Spider spider = Spider.create(new PostProcessor());
 
   @ApiOperation("启动爬虫")
@@ -35,6 +56,14 @@ public class SpiderController {
   @RequestMapping(value = "/startSpider", method = {RequestMethod.GET})
   public String startSpider() {
     try {
+
+      long count = postService.count(new Post()) + commentService.count(new Comment()) + userService
+          .count(new User()) +
+          userTbsService.count(new UserTbs()) + wordDivideService.count(new WordDivide());
+
+      if (count > 0) {
+        return "库中有数据,请truncate table 后在执行爬虫";
+      }
 
       if (spider.getThreadAlive() > 0) {
         return "爬虫程序已启动,请勿重新请求";

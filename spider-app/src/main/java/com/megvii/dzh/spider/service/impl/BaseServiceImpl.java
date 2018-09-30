@@ -1,13 +1,19 @@
 package com.megvii.dzh.spider.service.impl;
 
+import com.megvii.dzh.spider.service.IBaseService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.megvii.dzh.spider.service.IBaseService;
 import tk.mybatis.mapper.common.BaseMapper;
 public class BaseServiceImpl<T> implements IBaseService<T> {
 
     @Autowired
     private BaseMapper<T> baseMapper;
+
+    @Override
+    public long count(T t) {
+        return baseMapper.selectCount(t);
+
+    }
 
     @Override
     public int deleteByPrimaryKey(String id) {

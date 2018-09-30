@@ -18,4 +18,6 @@ public interface IBaseService<T>{
     int updateByPrimaryKey(T t);
     
     List<T> selectList(T t);
+
+    long count(T t);
 }
