@@ -1,8 +1,12 @@
 package com.megvii.dzh.spider.common.config;
 
+import com.megvii.dzh.perfrom.concurrent.pool.ThreadPool;
+import com.megvii.dzh.spider.domain.po.Post;
+import com.megvii.dzh.spider.domain.po.User;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import lombok.Data;
 
 @Component
 @Data
@@ -32,4 +36,24 @@ public class BootConfig {
    */
   @Value("${site.sleep.time}")
   private String siteSleepTime;
+  /**
+   *
+   */
+  @Autowired
+  private ThreadPool<Post> threadPoolPost;
+  /**
+   *
+   */
+  @Autowired
+  private ThreadPool<Object> threadCommentDivide;
+  /**
+   *
+   */
+  @Autowired
+  private ThreadPool<User> threadUserDivide;
+  /**
+   *
+   */
+  @Autowired
+  private ThreadPool<Object> threadUserTbsDivide;
 }

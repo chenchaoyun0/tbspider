@@ -232,5 +232,6 @@
 
     <modules>
         <module>spider-app</module>
+        <module>thread-excute</module>
     </modules>
 </project>
