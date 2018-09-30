@@ -73,6 +73,12 @@
     <li class="text_slice">
         <a href="commentWordCloud">帖子回复的词云</a>
     </li>
+    <li class="text_slice">
+        <a href="userNameWordCloud">贴吧名词云</a>
+    </li>
+    <li class="text_slice">
+        <a href="userDevicePie">用户设备分布比例</a>
+    </li>
 </ul>
 </body>
 </html>

@@ -1,13 +1,14 @@
- package com.megvii.dzh.spider.service;
+package com.megvii.dzh.spider.service;
 
-import java.util.List;
 import com.megvii.dzh.spider.domain.po.Comment;
 import com.megvii.dzh.spider.domain.vo.NameValue;
+import java.util.List;
 
 public interface ICommentService extends IBaseService<Comment> {
 
-    List<NameValue> getActiveUser(String year,int limit);
+  List<NameValue> getActiveUser(String year, int limit);
 
-    List<NameValue> getActiveUserBar(int limit);
+  List<NameValue> getActiveUserBar(int limit);
 
+  List<NameValue> getUserDevicePie(int limit);
 }

@@ -15,7 +15,19 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements ICom
 
     @Autowired
     private CommentMapper commentMapper;
-    
+
+    @Override
+    public List<NameValue> getUserDevicePie(int limit) {
+        try {
+            List<NameValue> list = commentMapper.getUserDevicePie(limit);
+            log.info("---> size {} data {}", list.size());
+            return list;
+        } catch (Exception e) {
+            log.error("getUserDevicePie error {}", e);
+        }
+        return null;
+    }
+
     @Override
     public List<NameValue> getActiveUser(String year,int limit) {
         try {

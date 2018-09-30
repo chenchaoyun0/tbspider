@@ -286,11 +286,6 @@ public class AnalysisController {
   }
 
   // ------------------------------***我是分割线***--------------------------------------------//
-  @RequestMapping(value = "/tbNameWordCloud")
-  public String tbNameWordCloud() {
-    return "tbNameWordCloud";
-  }
-
   /**
    * 用户关注贴吧词云
    */
@@ -301,14 +296,28 @@ public class AnalysisController {
     return nameValuesByYear;
   }
 
-  /**
-   * 男女比例
-   */
-  @RequestMapping(value = "/userGender")
-  public String userGender() {
-    return "userGender";
+  @RequestMapping(value = "/userNameWordCloud")
+  public String userNameWordCloud() {
+    return "userNameWordCloud";
   }
 
+  /**
+   * 用户贴吧名词云
+   */
+  @RequestMapping(value = "/getUserNameWordCloud")
+  @ResponseBody
+  public List<NameValue> getUserNameWordCloud(int limit) {
+    return wordDivideService.nameValues(WordDivideType.USER_NAME,limit);
+  }
+
+  @RequestMapping(value = "/tbNameWordCloud")
+  public String tbNameWordCloud() {
+    return "tbNameWordCloud";
+  }
+
+
+
+  // ------------------------------***我是分割线***--------------------------------------------//
   @RequestMapping(value = "/getUserGender")
   @ResponseBody
   public List<NameValue> getUserGender() {
@@ -318,15 +327,42 @@ public class AnalysisController {
   /**
    * 男女比例
    */
+  @RequestMapping(value = "/userGender")
+  public String userGender() {
+    return "userGender";
+  }
+
+  // ------------------------------***我是分割线***--------------------------------------------//
+
+  /**
+   *吧龄分布
+   */
   @RequestMapping(value = "/usertbAge")
   public String usertbAge() {
     return "usertbAge";
   }
 
+
   @RequestMapping(value = "/getUsertbAge")
   @ResponseBody
   public List<NameValue> getUsertbAge(int limit) {
     return userService.getUsertbAge(limit);
+  }
+  // ------------------------------***我是分割线***--------------------------------------------//
+
+  /**
+   *用户设备分布
+   */
+  @RequestMapping(value = "/userDevicePie")
+  public String userDevicePie() {
+    return "userDevicePie";
+  }
+
+
+  @RequestMapping(value = "/getUserDevicePie")
+  @ResponseBody
+  public List<NameValue> getUserDevicePie(int limit) {
+    return commentService.getUserDevicePie(limit);
   }
 
 }
