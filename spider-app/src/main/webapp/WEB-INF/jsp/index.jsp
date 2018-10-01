@@ -53,7 +53,16 @@
         <a href="postTitlesyear2018">2018年度的十大热帖</a>
     </li>
     <li class="text_slice">
-        <a href="activeUser">十大活跃用户，按年分组</a>
+        <a href="activeUser2016">2016十大活跃用户</a>
+    </li>
+    <li class="text_slice">
+        <a href="activeUser2017">2017十大活跃用户</a>
+    </li>
+    <li class="text_slice">
+        <a href="activeUser2018">2018十大活跃用户</a>
+    </li>
+    <li class="text_slice">
+        <a href="activeUser">2007~2018十大活跃用户</a>
     </li>
     <li class="text_slice">
         <a href="userFansBar">粉丝最多的10大用户</a>

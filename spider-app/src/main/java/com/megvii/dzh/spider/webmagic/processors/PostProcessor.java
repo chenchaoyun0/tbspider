@@ -7,6 +7,7 @@ import com.megvii.dzh.spider.common.utils.CrowProxyProvider;
 import com.megvii.dzh.spider.common.utils.DateConvertUtils;
 import com.megvii.dzh.spider.common.utils.ProxyGeneratedUtil;
 import com.megvii.dzh.spider.common.utils.SpiderFileUtils;
+import com.megvii.dzh.spider.common.utils.SpiderStringUtils;
 import com.megvii.dzh.spider.common.utils.SpringUtils;
 import com.megvii.dzh.spider.common.utils.URLGeneratedUtil;
 import com.megvii.dzh.spider.domain.po.Comment;
@@ -222,14 +223,14 @@ public class PostProcessor implements PageProcessor {
       String userHref = html.xpath("//*[@id=\"j_p_postlist\"]/div/div[2]/ul/li[3]/a/@href").get();
       String userName = postUser.getAuthor().getUser_name();
       // 保存数据
-      post.setContent(content);
+      post.setContent(SpiderStringUtils.xffReplace(content));
       post.setPostUrl(StringUtils.substringBefore(url, "?pn="));
       post.setReplyNum(Integer.parseInt(StringUtils.isBlank(replyNum) ? "0" : replyNum));
       post.setTime(DateConvertUtils
           .parse(postUser.getContent().getDate(), DateConvertUtils.DATE_TIME_NO_SS));
-      post.setTitle(title);
+      post.setTitle(SpiderStringUtils.xffReplace(title));
       post.setType(1);
-      post.setUserName(userName);
+      post.setUserName(SpiderStringUtils.xffReplace(userName));
       // 帖子分页不再保存
       if (url.indexOf("pn") < 0) {
         page.putField("post", post);
@@ -291,12 +292,12 @@ public class PostProcessor implements PageProcessor {
             .xpath("//*[@id=\"j_p_postlist\"]/div[" + i + "]/div[2]/ul/li[3]/a/text()").toString();
         //
         Comment comment = new Comment();
-        comment.setContent(contentComment);
+        comment.setContent(SpiderStringUtils.xffReplace(contentComment));
         comment.setPostUrl(page.getUrl().toString());
         comment.setUserDevice(dataCommentPo.getContent().getOpen_type());
         comment.setTime(DateConvertUtils
             .parse(dataCommentPo.getContent().getDate(), DateConvertUtils.DATE_TIME_NO_SS));
-        comment.setUserName(userNameComment);
+        comment.setUserName(SpiderStringUtils.xffReplace(userNameComment));
         //
         listComment.add(comment);
       } else {
@@ -363,7 +364,7 @@ public class PostProcessor implements PageProcessor {
 
           userTbs.setTbLevel(Integer.parseInt(levelInt));
           userTbs.setTbName(tbName);
-          userTbs.setUserName(userName);
+          userTbs.setUserName(SpiderStringUtils.xffReplace(userName));
           userTbsList.add(userTbs);
         }
         page.putField("userTbsList", userTbsList);
@@ -372,7 +373,7 @@ public class PostProcessor implements PageProcessor {
       //
       User user = new User();
       user.setUserHomeUrl(page.getRequest().getUrl());
-      user.setUserName(userName);
+      user.setUserName(SpiderStringUtils.xffReplace(userName));
       user.setFollowCount(Integer.parseInt(StringUtils.isBlank(followCount) ? "0" : followCount));
       user.setFansCount(Integer.parseInt(StringUtils.isBlank(fansCount) ? "0" : fansCount));
       user.setGender("userinfo_sex userinfo_sex_male".equals(gender) ? 1 : 0);

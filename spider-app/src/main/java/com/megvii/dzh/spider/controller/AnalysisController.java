@@ -73,7 +73,7 @@ public class AnalysisController {
   @RequestMapping(value = "/getCommentWordCloud")
   @ResponseBody
   public List<NameValue> getCommentWordCloud(int limit) {
-    return wordDivideService.nameValues(WordDivideType.CONTENT,limit);
+    return wordDivideService.nameValues(WordDivideType.CONTENT, limit);
   }
 
   // ------------------------------***我是分割线***--------------------------------------------//
@@ -82,12 +82,27 @@ public class AnalysisController {
     return "activeUser";
   }
 
+  @RequestMapping(value = "/activeUser2016")
+  public String activeUser2016() {
+    return "activeUser2016";
+  }
+
+  @RequestMapping(value = "/activeUser2017")
+  public String activeUser2017() {
+    return "activeUser2017";
+  }
+
+  @RequestMapping(value = "/activeUser2018")
+  public String activeUser2018() {
+    return "activeUser2018";
+  }
+
   /**
    * 20大活跃用户，按年分组
    */
   @RequestMapping(value = "/getActiveUser")
   @ResponseBody
-  public List<NameValue> getActiveUser(String year, int limit) {
+  public List<NameValue> getActiveUser(int year, int limit) {
     List<NameValue> nameValuesByYear = commentService.getActiveUser(year, limit);
     return nameValuesByYear;
   }
@@ -286,6 +301,7 @@ public class AnalysisController {
   }
 
   // ------------------------------***我是分割线***--------------------------------------------//
+
   /**
    * 用户关注贴吧词云
    */
@@ -307,14 +323,13 @@ public class AnalysisController {
   @RequestMapping(value = "/getUserNameWordCloud")
   @ResponseBody
   public List<NameValue> getUserNameWordCloud(int limit) {
-    return wordDivideService.nameValues(WordDivideType.USER_NAME,limit);
+    return wordDivideService.nameValues(WordDivideType.USER_NAME, limit);
   }
 
   @RequestMapping(value = "/tbNameWordCloud")
   public String tbNameWordCloud() {
     return "tbNameWordCloud";
   }
-
 
 
   // ------------------------------***我是分割线***--------------------------------------------//
@@ -335,7 +350,7 @@ public class AnalysisController {
   // ------------------------------***我是分割线***--------------------------------------------//
 
   /**
-   *吧龄分布
+   * 吧龄分布
    */
   @RequestMapping(value = "/usertbAge")
   public String usertbAge() {
@@ -351,7 +366,7 @@ public class AnalysisController {
   // ------------------------------***我是分割线***--------------------------------------------//
 
   /**
-   *用户设备分布
+   * 用户设备分布
    */
   @RequestMapping(value = "/userDevicePie")
   public String userDevicePie() {

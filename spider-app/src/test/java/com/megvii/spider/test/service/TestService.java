@@ -94,7 +94,7 @@ public class TestService {
 
   @Test
   public void test9() {
-    List<NameValue> list = commentService.getActiveUser("2017", 30);
+    List<NameValue> list = commentService.getActiveUser(2012, 30);
     log.info("---> size {} data {}", list.size(), JSONObject.toJSONString(list));
   }
 

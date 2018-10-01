@@ -29,9 +29,15 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements ICom
     }
 
     @Override
-    public List<NameValue> getActiveUser(String year,int limit) {
+    public List<NameValue> getActiveUser(int year,int limit) {
         try {
-            List<NameValue> list = commentMapper.getActiveUser(year,limit);
+            int yearBegin=year;
+            int yearEnd=year;
+            if(year==0){
+                yearBegin=2007;
+                yearEnd=2018;
+            }
+            List<NameValue> list = commentMapper.getActiveUser(yearBegin,yearEnd,limit);
             log.info("---> size {} data {}", list.size());
             return list;
         } catch (Exception e) {

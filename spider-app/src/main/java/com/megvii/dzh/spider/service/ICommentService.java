@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ICommentService extends IBaseService<Comment> {
 
-  List<NameValue> getActiveUser(String year, int limit);
+  List<NameValue> getActiveUser(int year, int limit);
 
   List<NameValue> getActiveUserBar(int limit);
 
