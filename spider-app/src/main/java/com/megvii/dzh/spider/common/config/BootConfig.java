@@ -36,6 +36,12 @@ public class BootConfig {
    */
   @Value("${site.sleep.time}")
   private String siteSleepTime;
+
+  /**
+   * 抓取间隔
+   */
+  @Value("${spider.http.type}")
+  private String spiderHttpType;
   /**
    * 抓取间隔
    */

@@ -27,6 +27,11 @@
             <artifactId>thread-excute</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+      <dependency>
+        <groupId>findbugs</groupId>
+        <artifactId>annotations</artifactId>
+        <version>1.0.0</version>
+      </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>

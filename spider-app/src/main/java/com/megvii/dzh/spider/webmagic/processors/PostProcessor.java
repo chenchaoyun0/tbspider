@@ -3,7 +3,6 @@ package com.megvii.dzh.spider.webmagic.processors;
 import com.alibaba.fastjson.JSONObject;
 import com.megvii.dzh.spider.common.config.BootConfig;
 import com.megvii.dzh.spider.common.constant.Constant;
-import com.megvii.dzh.spider.common.utils.CrowProxyProvider;
 import com.megvii.dzh.spider.common.utils.DateConvertUtils;
 import com.megvii.dzh.spider.common.utils.ProxyGeneratedUtil;
 import com.megvii.dzh.spider.common.utils.SpiderFileUtils;
@@ -21,16 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.processor.PageProcessor;
-import us.codecraft.webmagic.proxy.Proxy;
 import us.codecraft.webmagic.selector.Html;
 
 @Slf4j
@@ -43,11 +41,11 @@ public class PostProcessor implements PageProcessor {
   /**
    * 匹配贴吧首页过滤
    */
-  private static final String TB_HOME = "http://tieba.baidu.com/f\\?kw=(.*?)";
+  private static final String TB_HOME = "://tieba.baidu.com/f\\?kw=(.*?)";
   /**
    * 匹配贴吧首页帖子分页
    */
-  private static final String TB_HOME_PAGE = "http://tieba.baidu.com/f?kw={0}&ie=utf-8&pn=";
+  private static final String TB_HOME_PAGE = "://tieba.baidu.com/f?kw={0}&ie=utf-8&pn=";
 
   /**
    * 匹配用户主页
@@ -61,6 +59,24 @@ public class PostProcessor implements PageProcessor {
 
   private BootConfig bootConfig = SpringUtils.getBean(BootConfig.class);
 
+  /**
+   * 计数
+   */
+  public AtomicLong totalPost = new AtomicLong();
+  public AtomicLong totalComment = new AtomicLong();
+  public AtomicLong totalUser = new AtomicLong();
+
+  /**
+   * 方便本地测试
+   */
+  public PostProcessor() {
+    if (bootConfig == null) {
+      bootConfig = new BootConfig();
+      bootConfig.setSpiderPostSize(10);
+      Constant.setSpiderHttpType("http");
+      Constant.setTbName("太原理工大学");
+    }
+  }
 
   /**
    * 更换字段agent 有可能变成手机客户端，影响爬虫
@@ -95,16 +111,18 @@ public class PostProcessor implements PageProcessor {
     log.debug("---> url {}", url);
     Html html = page.getHtml();
     try {
+      log.info("---> 当前爬取贴吧第【{}】页，已爬取帖子【{}】条，帖子回复【{}】，用户主页【{}】",( pageNo / 50),totalPost.get(),totalComment.get(),totalUser.get());
+
       /**
        * 若是贴吧首页则将所有帖子加入待爬取队列
        */
-      if (url.matches(TB_HOME)) {
+      if (url.matches(Constant.getSpiderHttpType() + TB_HOME)) {
         /**
          * 将所有帖子页面加入队列
          */
         //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//postlist.html");
         List<String> listPosts = html.links().regex(POST_URL).all();
-        log.info("---> 当前页总帖数 {}", listPosts.size());
+        //log.info("---> 当前页总帖数 {}", listPosts.size());
         listPosts.forEach(e -> URLGeneratedUtil.generatePostURL(e));
         page.addTargetRequests(listPosts);
       }
@@ -113,7 +131,7 @@ public class PostProcessor implements PageProcessor {
        * 匹配帖子页url
        */
       if (page.getUrl().regex(POST_URL).match()) {
-        //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//postDetail.html");
+//        SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//postDetail.html");
         String title = html.xpath("/html/head/title/text()").get();
         //有时候获取不到帖子标题
         if (title == null) {
@@ -134,7 +152,7 @@ public class PostProcessor implements PageProcessor {
        * 用户主页url
        */
       if (page.getUrl().regex(USER_HOME).match()) {
-        //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//userHome.html");
+//        SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//userHome.html");
         String title = html.xpath("/html/head/title/text()").get();
         if (StringUtils.isNotBlank(title) && title.indexOf("404") > 0) {
           return;
@@ -145,15 +163,16 @@ public class PostProcessor implements PageProcessor {
       /**
        * 贴吧分页，要爬的贴吧分好页，加入待爬取队列
        */
-      if (url.matches(TB_HOME)) {
+      if (url.matches(Constant.getSpiderHttpType() + TB_HOME)) {
         /**
-         * 将所有帖子页面加入队列
+         * 判断当前爬取页是否超过限制
          */
         if (pageNo < bootConfig.getSpiderPostSize()) {
-          log.info("---------> 继续爬取第 {} 页", pageNo / 50);
+          log.info("---------> 继续爬取第【{}】页 贴吧 <-----------", pageNo / 50);
           // 将贴吧名编码
           String tieBaName = URLEncoder.encode(Constant.getTbName(), "UTF-8");
-          String match = MessageFormat.format(TB_HOME_PAGE, tieBaName);
+          String match = MessageFormat
+              .format(Constant.getSpiderHttpType() + TB_HOME_PAGE, tieBaName);
           page.addTargetRequest(match + pageNo);
           pageNo = pageNo + 50;
         }
@@ -210,8 +229,10 @@ public class PostProcessor implements PageProcessor {
         // 获取不到信息
         return;
       }
-      // String time =
-      // html.xpath("//*[@id=\"j_p_postlist\"]/div[1]/div[3]/div[3]/div[1]/ul[2]/li[2]/span/text()").toString();
+      String time =
+          html.xpath(
+              "//*[@id=\"j_p_postlist\"]/div[1]/div[3]/div[3]/div[1]/ul[2]/li[2]/span/text()")
+              .toString();
       String content = html
           .xpath("//*[@id=\"post_content_" + postUser.getContent().getPost_id() + "\"]/text()")
           .toString();
@@ -227,13 +248,15 @@ public class PostProcessor implements PageProcessor {
       post.setPostUrl(StringUtils.substringBefore(url, "?pn="));
       post.setReplyNum(Integer.parseInt(StringUtils.isBlank(replyNum) ? "0" : replyNum));
       post.setTime(DateConvertUtils
-          .parse(postUser.getContent().getDate(), DateConvertUtils.DATE_TIME_NO_SS));
+          .parse(postUser.getContent().getDate() == null ? time : postUser.getContent().getDate(),
+              DateConvertUtils.DATE_TIME_NO_SS));
       post.setTitle(SpiderStringUtils.xffReplace(title));
       post.setType(1);
       post.setUserName(SpiderStringUtils.xffReplace(userName));
       // 帖子分页不再保存
       if (url.indexOf("pn") < 0) {
         page.putField("post", post);
+        totalPost.incrementAndGet();
         /**
          * 用户主页加入队列
          */
@@ -305,6 +328,7 @@ public class PostProcessor implements PageProcessor {
       }
     }
     page.putField("listComment", listComment);
+    totalComment.incrementAndGet();
   }
 
   /**
@@ -383,6 +407,7 @@ public class PostProcessor implements PageProcessor {
       user.setUserHeadUrl(userHeadUrl);
       //
       page.putField("user", user);
+      totalUser.incrementAndGet();
     } catch (Exception e) {
       log.error("crawlUser error url {}", url, e);
       String uuid = UUID.randomUUID().toString();
@@ -391,16 +416,10 @@ public class PostProcessor implements PageProcessor {
   }
 
   public static void main(String[] args) {
-    HttpClientDownloader httpClientDownloader = new HttpClientDownloader();
-    // 设置动态转发代理，使用定制的ProxyProvider
-    httpClientDownloader
-        .setProxyProvider(CrowProxyProvider.from(new Proxy("forward.xdaili.cn", 80)));
     Spider.create(new PostProcessor())//
-        // .addUrl("http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=0")//
-        // .addUrl("http://tieba.baidu.com/p/2124996289")//
+        //http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8
         .addUrl(
-            "http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8&pn=36950")//
-//                .addUrl("http://tieba.baidu.com/home/main?un=%E5%B0%91%E7%88%B794205430&ie=utf-8&fr=pb&ie=utf-8")//
+            "http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6&ie=utf-8")//
         .addPipeline(new ConsolePipeline())//
         .thread(1)//
         .run();
