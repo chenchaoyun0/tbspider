@@ -62,7 +62,7 @@
 				type : 'category',
 				name : '月份',
 				axisLabel : {
-					formatter : '{value} 月' //控制输出格式
+					formatter : '{value}' //控制输出格式
 				},
 				data : []
 			//先设置数据值为空，后面用Ajax获取动态数据填入
