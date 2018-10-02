@@ -56,6 +56,9 @@ public class SpiderController {
   @RequestMapping(value = "/startSpider", method = {RequestMethod.GET})
   public String startSpider() {
     try {
+      if (spider.getThreadAlive() > 0) {
+        return "爬虫程序已启动,请勿重新请求";
+      }
 
       long count = postService.count(new Post()) + commentService.count(new Comment()) + userService
           .count(new User()) +
@@ -65,15 +68,13 @@ public class SpiderController {
         return "库中有数据,请truncate table 后在执行爬虫";
       }
 
-      if (spider.getThreadAlive() > 0) {
-        return "爬虫程序已启动,请勿重新请求";
-      }
       // 启动多少个线程
       int spiderThreads = bootConfig.getSpiderThreads();
       // 贴吧名称
       String tbName = URLEncoder.encode(Constant.getTbName(), "UTF-8");
       // 开启爬虫
-      spider.addUrl(bootConfig.getSpiderHttpType()+"://tieba.baidu.com/f?kw=" + tbName + "&ie=utf-8&pn=0")//
+      spider.addUrl(
+          bootConfig.getSpiderHttpType() + "://tieba.baidu.com/f?kw=" + tbName + "&ie=utf-8&pn=0")//
           .addPipeline(SpringUtils.getBean(PostDownloadPipeline.class))//
           .thread(spiderThreads)//
           .runAsync();

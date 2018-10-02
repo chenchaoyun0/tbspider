@@ -1,7 +1,11 @@
 package com.megvii.dzh.spider.controller;
 
+import com.megvii.dzh.spider.common.config.BootConfig;
 import com.megvii.dzh.spider.common.enums.WordDivideType;
 import com.megvii.dzh.spider.common.utils.NumberUtils;
+import com.megvii.dzh.spider.domain.po.Comment;
+import com.megvii.dzh.spider.domain.po.Post;
+import com.megvii.dzh.spider.domain.po.User;
 import com.megvii.dzh.spider.domain.vo.NameValue;
 import com.megvii.dzh.spider.domain.vo.PostGroupByMonthVo;
 import com.megvii.dzh.spider.domain.vo.PostYears;
@@ -17,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,6 +31,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @Slf4j
 public class AnalysisController {
+
+  @Autowired
+  private BootConfig bootConfig;
 
   @Resource
   private IPostService postService;
@@ -38,8 +47,15 @@ public class AnalysisController {
   private IWordDivideService wordDivideService;
 
   @RequestMapping(value = "/")
-  public String index() {
+  public String index(Model model) {
     log.info("===========index=============");
+    long countPost = postService.count(new Post());
+    long countComment = commentService.count(new Comment());
+    long countUser = userService.count(new User());
+    model.addAttribute("tbName",bootConfig.getSpiderTbName());
+    model.addAttribute("countPost",countPost);
+    model.addAttribute("countComment",countComment);
+    model.addAttribute("countUser",countUser);
     return "index";
   }
 

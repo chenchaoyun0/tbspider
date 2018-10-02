@@ -18,6 +18,7 @@
 </head>
 <body>
 <h1 style="font-size: 25px;font-family: 楷体">Java 百度贴吧爬虫-数据分析导航列表</h1>
+<h2 style="font-size: 20px;font-family: 楷体">贴吧名:${tbName}，帖子总数:${countPost}，回复总数:${countComment}，用户总数:${countUser}</h2>
 <ul>
     <li class="text_slice">
         <a href="postTitleWordCloud">帖子标题的热点词汇</a>
