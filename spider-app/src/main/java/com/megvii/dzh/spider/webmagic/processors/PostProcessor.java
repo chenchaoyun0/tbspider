@@ -59,6 +59,8 @@ public class PostProcessor implements PageProcessor {
 
   private BootConfig bootConfig = SpringUtils.getBean(BootConfig.class);
 
+  private long logLoop = 0;
+
   /**
    * 计数
    */
@@ -74,7 +76,7 @@ public class PostProcessor implements PageProcessor {
       bootConfig = new BootConfig();
       bootConfig.setSpiderPostSize(10);
       Constant.setSpiderHttpType("http");
-      Constant.setTbName("太原理工大学");
+      Constant.setTbName("太原工业学院");
     }
   }
 
@@ -111,8 +113,15 @@ public class PostProcessor implements PageProcessor {
     log.debug("---> url {}", url);
     Html html = page.getHtml();
     try {
-      log.info("---> 当前爬取贴吧第【{}】页，已爬取帖子【{}】条，帖子回复【{}】，用户主页【{}】",( pageNo / 50),totalPost.get(),totalComment.get(),totalUser.get());
-
+      //log
+      if (logLoop++ % 30 == 0&&logLoop>1) {
+        log.info("---> 当前线程【{}】，爬取URL【{}】", Thread.currentThread().getName(), url);
+        log.info("---> 当前爬取论坛第【{}】页，已爬取帖子【{}】条，帖子回复【{}】，用户主页【{}】", (pageNo), totalPost.get(), totalComment.get(), totalUser.get());
+        int sizePostQueue = bootConfig.getThreadPoolPost().arrayBlockingQueue.size();
+        int sizeCommentQueue = bootConfig.getThreadCommentDivide().arrayBlockingQueue.size();
+        int sizeUserQueue = bootConfig.getThreadUserDivide().arrayBlockingQueue.size();
+        log.info("---> 当队列堆积 post【{}】，comment【{}】，user【{}】", sizePostQueue, sizeCommentQueue, sizeUserQueue);
+      }
       /**
        * 若是贴吧首页则将所有帖子加入待爬取队列
        */
@@ -328,7 +337,7 @@ public class PostProcessor implements PageProcessor {
       }
     }
     page.putField("listComment", listComment);
-    totalComment.incrementAndGet();
+    totalComment.addAndGet(listComment.size());
   }
 
   /**

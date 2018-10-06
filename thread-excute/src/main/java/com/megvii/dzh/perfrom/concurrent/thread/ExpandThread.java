@@ -14,6 +14,10 @@ public abstract class ExpandThread<T> extends Thread {
     this.arrayBlockingQueue = arrayBlockingQueue;
   }
 
+  public ArrayBlockingQueue<T> getArrayBlockingQueue() {
+    return arrayBlockingQueue;
+  }
+
   @Override
   public void run() {
     // 1.获取队列中的数据，直到队列为空时
