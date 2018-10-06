@@ -4,6 +4,7 @@ import com.megvii.dzh.spider.common.config.BootConfig;
 import com.megvii.dzh.spider.common.constant.Constant;
 import com.megvii.dzh.spider.common.utils.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apdplat.word.WordSegmenter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -33,6 +34,8 @@ public class SpiderApplication extends SpringBootServletInitializer implements A
             Constant.setTbName(bootConfig.getSpiderTbName());
             Constant.setSpiderHttpType(bootConfig.getSpiderHttpType());
             log.info("---> 待爬取的贴吧名为: {}",Constant.getTbName());
+            log.info("---> 初始化词典...");
+            WordSegmenter.seg("test");
         } catch (Exception e) {
             log.error("onApplicationEvent error", e);
         }
