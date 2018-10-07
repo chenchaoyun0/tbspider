@@ -67,14 +67,4 @@ java 爬虫，采用webmagic框架。目的爬取百度贴吧的数据，并做�
 
 # 数据分析/效果展示
 
-- ## 帖子标题的热点词汇（看看大家发帖最频繁的词汇）
-
-有没有、学校、学姐学长...不愧是学校的贴吧哈
-
-![img](https://img-blog.csdn.net/20181006212441788?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
-
-## 发帖与不发帖用户占比（潜水/只回帖用户与常发帖用户占比）
-
-这里能看出所有吧友发帖的人、与不发帖只回复的人的比例。结果出乎我预料，我一直以为是潜水的比较多呢~~
-
-![img](https://img-blog.csdn.net/20181006212924512?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+- ## 见博客：https://blog.csdn.net/sinat_22767969/article/details/82953774
