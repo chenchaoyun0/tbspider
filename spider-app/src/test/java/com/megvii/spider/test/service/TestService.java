@@ -3,6 +3,7 @@ package com.megvii.spider.test.service;
 import com.alibaba.fastjson.JSONObject;
 import com.megvii.dzh.spider.SpiderApplication;
 import com.megvii.dzh.spider.common.enums.WordDivideType;
+import com.megvii.dzh.spider.domain.vo.GetUserHeadListVo;
 import com.megvii.dzh.spider.domain.vo.NameValue;
 import com.megvii.dzh.spider.domain.vo.PostGroupByMonthVo;
 import com.megvii.dzh.spider.domain.vo.PostYears;
@@ -131,6 +132,11 @@ public class TestService {
   @Test
   public void test15() {
     List<NameValue> list = wordDivideService.nameValues(WordDivideType.CONTENT, 20);
+    log.info("---> size {} data {}", list.size(), JSONObject.toJSONString(list));
+  }
+  @Test
+  public void test16() {
+    List<GetUserHeadListVo> list = commentService.getUserHeadList(10);
     log.info("---> size {} data {}", list.size(), JSONObject.toJSONString(list));
   }
 }

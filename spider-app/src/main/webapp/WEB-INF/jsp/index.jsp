@@ -89,6 +89,9 @@
     <li class="text_slice">
         <a href="userDevicePie">用户设备分布比例</a>
     </li>
+    <li class="text_slice">
+        <a href="userHeadList/100">用户头像大集合</a>
+    </li>
 </ul>
 </body>
 </html>

@@ -114,7 +114,7 @@ public class PostProcessor implements PageProcessor {
     Html html = page.getHtml();
     try {
       //log
-      if (logLoop++ % 30 == 0&&logLoop>1) {
+      if (logLoop++ % 30 == 0 && logLoop > 1) {
         log.info("---> 当前线程【{}】，爬取URL【{}】", Thread.currentThread().getName(), url);
         log.info("---> 当前爬取论坛第【{}】页，已爬取帖子【{}】条，帖子回复【{}】，用户主页【{}】", (pageNo), totalPost.get(), totalComment.get(), totalUser.get());
         int sizePostQueue = bootConfig.getThreadPoolPost().arrayBlockingQueue.size();
@@ -126,12 +126,9 @@ public class PostProcessor implements PageProcessor {
        * 若是贴吧首页则将所有帖子加入待爬取队列
        */
       if (url.matches(Constant.getSpiderHttpType() + TB_HOME)) {
-        /**
-         * 将所有帖子页面加入队列
-         */
         //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//postlist.html");
+        //将所有帖子页面加入队列
         List<String> listPosts = html.links().regex(POST_URL).all();
-        //log.info("---> 当前页总帖数 {}", listPosts.size());
         listPosts.forEach(e -> URLGeneratedUtil.generatePostURL(e));
         page.addTargetRequests(listPosts);
       }
@@ -140,7 +137,7 @@ public class PostProcessor implements PageProcessor {
        * 匹配帖子页url
        */
       if (page.getUrl().regex(POST_URL).match()) {
-//        SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//postDetail.html");
+        //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//postDetail.html");
         String title = html.xpath("/html/head/title/text()").get();
         //有时候获取不到帖子标题
         if (title == null) {
@@ -161,7 +158,7 @@ public class PostProcessor implements PageProcessor {
        * 用户主页url
        */
       if (page.getUrl().regex(USER_HOME).match()) {
-//        SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//userHome.html");
+        //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//userHome.html");
         String title = html.xpath("/html/head/title/text()").get();
         if (StringUtils.isNotBlank(title) && title.indexOf("404") > 0) {
           return;

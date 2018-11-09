@@ -6,6 +6,7 @@ import com.megvii.dzh.spider.common.utils.NumberUtils;
 import com.megvii.dzh.spider.domain.po.Comment;
 import com.megvii.dzh.spider.domain.po.Post;
 import com.megvii.dzh.spider.domain.po.User;
+import com.megvii.dzh.spider.domain.vo.GetUserHeadListVo;
 import com.megvii.dzh.spider.domain.vo.NameValue;
 import com.megvii.dzh.spider.domain.vo.PostGroupByMonthVo;
 import com.megvii.dzh.spider.domain.vo.PostYears;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -395,5 +397,15 @@ public class AnalysisController {
   public List<NameValue> getUserDevicePie(int limit) {
     return commentService.getUserDevicePie(limit);
   }
+  /**
+   * 用户头像集合
+   */
+  @RequestMapping(value = "/userHeadList/{limit}")
+  public String userHeadList(@PathVariable("limit") int limit,Model model) {
+    List<GetUserHeadListVo> userHeadList = commentService.getUserHeadList(limit);
+    model.addAttribute("userHeadList",userHeadList);
+    return "userHeadList";
+  }
+
 
 }
