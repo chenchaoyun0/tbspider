@@ -1,7 +1,7 @@
 #!/bin/bash
 sh stop.sh
 echo "current path is ------> $(pwd)"
-APP_NAME=spider-app.war
+APP_NAME=../target/spider-app.war
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8
 sudo java -Duser.timezone=GMT+8 \
   -Xms128m -Xmx1024m -Xmn128m \
