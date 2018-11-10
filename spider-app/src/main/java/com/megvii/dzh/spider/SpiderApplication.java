@@ -33,8 +33,6 @@ public class SpiderApplication extends SpringBootServletInitializer implements A
             BootConfig bootConfig = SpringUtils.getBean(BootConfig.class);
             Constant.setTbName(bootConfig.getSpiderTbName());
             log.info("---> 待爬取的贴吧名为: {}",Constant.getTbName());
-            log.info("---> 初始化词典...");
-            WordSegmenter.seg("test");
         } catch (Exception e) {
             log.error("onApplicationEvent error", e);
         }
