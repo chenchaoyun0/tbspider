@@ -34,6 +34,6 @@ public class SpiderStringUtils {
         } catch (Exception e) {
             log.error("getTieBaEncodeName error {}", e);
         }
-        return "";
+        return str;
     }
 }

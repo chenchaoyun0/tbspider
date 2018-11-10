@@ -13,7 +13,6 @@ public class Constant {
      */
     public static String tbName = "太原工业学院";
 
-    public static String spiderHttpType="http";
 
     public static String getTbName() {
         return tbName;
@@ -21,13 +20,5 @@ public class Constant {
 
     public static void setTbName(String tbName) {
         Constant.tbName = tbName;
-    }
-
-    public static String getSpiderHttpType() {
-        return spiderHttpType;
-    }
-
-    public static void setSpiderHttpType(String spiderHttpType) {
-        Constant.spiderHttpType = spiderHttpType;
     }
 }

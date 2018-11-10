@@ -73,8 +73,7 @@ public class SpiderController {
       // 贴吧名称
       String tbName = URLEncoder.encode(Constant.getTbName(), "UTF-8");
       // 开启爬虫
-      spider.addUrl(
-          bootConfig.getSpiderHttpType() + "://tieba.baidu.com/f?kw=" + tbName + "&ie=utf-8&pn=0")//
+      spider.addUrl("http://tieba.baidu.com/f?kw=" + tbName + "&ie=utf-8&pn=0")//
           .addPipeline(SpringUtils.getBean(PostDownloadPipeline.class))//
           .thread(spiderThreads)//
           .runAsync();

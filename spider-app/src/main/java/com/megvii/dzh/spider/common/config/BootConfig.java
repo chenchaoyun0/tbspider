@@ -40,11 +40,6 @@ public class BootConfig {
   /**
    * 抓取间隔
    */
-  @Value("${spider.http.type}")
-  private String spiderHttpType;
-  /**
-   * 抓取间隔
-   */
   @Value("${spider.post.size:100000}")
   private int spiderPostSize;
   /**

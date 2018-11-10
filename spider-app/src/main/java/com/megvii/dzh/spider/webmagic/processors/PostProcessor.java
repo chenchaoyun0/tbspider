@@ -41,11 +41,11 @@ public class PostProcessor implements PageProcessor {
   /**
    * 匹配贴吧首页过滤
    */
-  private static final String TB_HOME = "://tieba.baidu.com/f\\?kw=(.*?)";
+  private static final String TB_HOME = "http://tieba.baidu.com/f\\?kw=(.*?)";
   /**
    * 匹配贴吧首页帖子分页
    */
-  private static final String TB_HOME_PAGE = "://tieba.baidu.com/f?kw={0}&ie=utf-8&pn=";
+  private static final String TB_HOME_PAGE = "http://tieba.baidu.com/f?kw={0}&ie=utf-8&pn=";
 
   /**
    * 匹配用户主页
@@ -75,8 +75,6 @@ public class PostProcessor implements PageProcessor {
     if (bootConfig == null) {
       bootConfig = new BootConfig();
       bootConfig.setSpiderPostSize(10);
-      Constant.setSpiderHttpType("http");
-      Constant.setTbName("太原工业学院");
     }
   }
 
@@ -125,7 +123,7 @@ public class PostProcessor implements PageProcessor {
       /**
        * 若是贴吧首页则将所有帖子加入待爬取队列
        */
-      if (url.matches(Constant.getSpiderHttpType() + TB_HOME)) {
+      if (url.matches(TB_HOME)) {
         //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//postlist.html");
         //将所有帖子页面加入队列
         List<String> listPosts = html.links().regex(POST_URL).all();
@@ -169,7 +167,7 @@ public class PostProcessor implements PageProcessor {
       /**
        * 贴吧分页，要爬的贴吧分好页，加入待爬取队列
        */
-      if (url.matches(Constant.getSpiderHttpType() + TB_HOME)) {
+      if (url.matches(TB_HOME)) {
         /**
          * 判断当前爬取页是否超过限制
          */
@@ -178,7 +176,7 @@ public class PostProcessor implements PageProcessor {
           // 将贴吧名编码
           String tieBaName = URLEncoder.encode(Constant.getTbName(), "UTF-8");
           String match = MessageFormat
-              .format(Constant.getSpiderHttpType() + TB_HOME_PAGE, tieBaName);
+              .format(TB_HOME_PAGE, tieBaName);
           page.addTargetRequest(match + pageNo);
           pageNo = pageNo + 50;
         }
