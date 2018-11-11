@@ -149,7 +149,10 @@ public class PostProcessor implements PageProcessor {
         if (StringUtils.isNotBlank(title) && title.indexOf("404") > 0) {
           return;
         }
-        crawlPost(page, html);
+        /**
+         * 处理帖子数据
+         */
+        crawlPost(page);
       }
 
       /**
@@ -161,7 +164,7 @@ public class PostProcessor implements PageProcessor {
         if (StringUtils.isNotBlank(title) && title.indexOf("404") > 0) {
           return;
         }
-        crawlUser(page, html);
+        crawlUser(page);
 
       }
       /**
@@ -175,8 +178,7 @@ public class PostProcessor implements PageProcessor {
           log.info("---------> 继续爬取第【{}】页 贴吧 <-----------", pageNo / 50);
           // 将贴吧名编码
           String tieBaName = URLEncoder.encode(Constant.getTbName(), "UTF-8");
-          String match = MessageFormat
-              .format(TB_HOME_PAGE, tieBaName);
+          String match = MessageFormat.format(TB_HOME_PAGE, tieBaName);
           page.addTargetRequest(match + pageNo);
           pageNo = pageNo + 50;
         }
@@ -196,8 +198,9 @@ public class PostProcessor implements PageProcessor {
   /**
    * 帖子页 获取帖子数据
    */
-  private void crawlPost(Page page, Html html) {
+  private void crawlPost(Page page) {
     String url = page.getRequest().getUrl();
+    Html html = page.getHtml();
     try {
       /**
        * 过滤不是本校贴吧
@@ -233,10 +236,7 @@ public class PostProcessor implements PageProcessor {
         // 获取不到信息
         return;
       }
-      String time =
-          html.xpath(
-              "//*[@id=\"j_p_postlist\"]/div[1]/div[3]/div[3]/div[1]/ul[2]/li[2]/span/text()")
-              .toString();
+      String time = html.xpath("//*[@id=\"j_p_postlist\"]/div[1]/div[3]/div[3]/div[1]/ul[2]/li[2]/span/text()").toString();
       String content = html
           .xpath("//*[@id=\"post_content_" + postUser.getContent().getPost_id() + "\"]/text()")
           .toString();
@@ -273,7 +273,7 @@ public class PostProcessor implements PageProcessor {
       /**
        * 回复信息
        */
-      commentData(page, html);
+      commentData(page);
 
     } catch (Exception e) {
       log.error("crawlPost error url {}", url, e);
@@ -283,7 +283,8 @@ public class PostProcessor implements PageProcessor {
   }
 
 
-  private void commentData(Page page, Html html) {
+  private void commentData(Page page) {
+    Html html = page.getHtml();
     // 当前页回帖数量
     List<String> commentSize = html
         .xpath("//*[@id=\"j_p_postlist\"]/@class=l_post j_l_post l_post_bright/").all();
@@ -338,8 +339,10 @@ public class PostProcessor implements PageProcessor {
   /**
    * 帖子页 获取帖子数据
    */
-  private void crawlUser(Page page, Html html) {
+  private void crawlUser(Page page) {
     String url = page.getRequest().getUrl();
+    Html html = page.getHtml();
+
     try {
       String bodyclass = html.xpath("/html/body/@class").get();
       /**
