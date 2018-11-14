@@ -96,7 +96,7 @@ public class SpiderController {
     Map<String, Object> map = new HashMap<>();
     map.put("threadAlive", threadAlive);
     map.put("pageCount", pageCount);
-
+    log.info("爬虫状态:{}",JSONObject.toJSONString(map));
     return JSONObject.toJSONString(map);
   }
 
