@@ -27,7 +27,7 @@ java 爬虫，采用webmagic框架。目的爬取百度贴吧的数据，并做�
 - webmagic 0.7.3（修改版，修复https问题与log优化 下载地址：<https://download.csdn.net/download/sinat_22767969/10703880>）
 - mysql 5.7.17 （支持utf8mb4字符编码）
 
-### 表设计
+## 表设计
 
 - [ ] 用户表 user
 
@@ -40,9 +40,9 @@ java 爬虫，采用webmagic框架。目的爬取百度贴吧的数据，并做�
 - [ ] 分词表 word_divide
 
 
-### **计划统计**
+## **计划统计**
 
-1. 帖子标题的热点词汇（分析贴吧用户使用最频繁的词汇）
+### 1. 帖子标题的热点词汇（分析贴吧用户使用最频繁的词汇）
 ![](https://img-blog.csdn.net/20181006212441788?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 2. 发帖与不发帖用户占比（潜水/只回帖用户与常发帖用户占比）
