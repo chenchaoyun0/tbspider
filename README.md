@@ -21,9 +21,8 @@ java 爬虫，采用webmagic框架。目的爬取百度贴吧的数据，并做�
 # 技术栈 
 
 - springboot 1.5.7
-
 - springMVC+Rest+EChart...
-- mybatis 3.4.6
+- tx.mybatis 3.4.6
 - hikari 连接池
 - webmagic 0.7.3（修改版，修复https问题与log优化 下载地址：<https://download.csdn.net/download/sinat_22767969/10703880>）
 - mysql 5.7.17 （支持utf8mb4字符编码）
@@ -44,7 +43,10 @@ java 爬虫，采用webmagic框架。目的爬取百度贴吧的数据，并做�
 ### **计划统计**
 
 1. 帖子标题的热点词汇（分析贴吧用户使用最频繁的词汇）
+![](https://img-blog.csdn.net/20181006212441788?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 2. 发帖与不发帖用户占比（潜水/只回帖用户与常发帖用户占比）
+![](https://img-blog.csdn.net/20181007141049293?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 3. 发帖有回复与没回复占比（石沉大海的帖子占比）
 4. 年发帖量（分析近5年来发帖量最多的哪年）
 5. 年里的月发帖量（分析每年中，大家都喜欢在几月份发帖）
@@ -62,10 +64,6 @@ java 爬虫，采用webmagic框架。目的爬取百度贴吧的数据，并做�
 17. 收到礼物最多的十大用户（最受欢迎的吧友到底是谁？）
 18. 用户的头像大集合（一页展示所有用户的头像，并做图像分析出“平均头像”长啥样）
 19. 用户设备分布（到底是苹果用户多，还是安卓用户？）
-
-# 部分分析效果展示
-## 帖子标题热点词汇
-![](https://img-blog.csdn.net/20181006212441788?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 # 数据分析/效果展示
 
