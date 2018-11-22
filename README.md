@@ -47,23 +47,40 @@ java 爬虫，采用webmagic框架。目的爬取百度贴吧的数据，并做�
 
 2. 发帖与不发帖用户占比（潜水/只回帖用户与常发帖用户占比）
 ![](https://img-blog.csdn.net/20181007141049293?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
-3. 发帖有回复与没回复占比（石沉大海的帖子占比）
-4. 年发帖量（分析近5年来发帖量最多的哪年）
-5. 年里的月发帖量（分析每年中，大家都喜欢在几月份发帖）
-6. 时发帖量（分析大家每天最爱在什么时候发帖）
-7. 用户等级分布（分析贴吧用户各等级比例）
-8. 年度的十大热帖（按年统计每年讨论最热的帖子）
-9. 十大活跃用户，按年分组（所谓的贴吧达人/大神）
-10. 粉丝最多的10大用户（吧里人气最高的明星）
-11. 大家最喜欢关注的贴吧-词云（分析大家都喜欢关注哪些贴吧）
-12. 男女比例分布（吧里的男女用户比例，到底是？）
-13. 吧龄分布（大家贴吧的吧龄比例）
-14. 十大发帖量最多的用户（看看哪些人最爱在贴吧发帖了）
-15. 帖子回复的词云（看所有帖子下大家都在说些什么）
-16. 贴吧名词云（大家最喜欢用什么词起名）
-17. 收到礼物最多的十大用户（最受欢迎的吧友到底是谁？）
-18. 用户的头像大集合（一页展示所有用户的头像，并做图像分析出“平均头像”长啥样）
-19. 用户设备分布（到底是苹果用户多，还是安卓用户？）
+### 3. 发帖有回复与没回复占比（石沉大海的帖子占比）
+![](https://img-blog.csdn.net/20181007141142738?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 4. 年发帖量（分析近5年来发帖量最多的哪年）
+![](https://img-blog.csdn.net/20181006213436893?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 5. 年里的月发帖量（分析每年中，大家都喜欢在几月份发帖）
+![](https://img-blog.csdn.net/20181006213652111?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 6. 时发帖量（分析大家每天最爱在什么时候发帖）
+![](https://img-blog.csdn.net/20181006213925664?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 7. 用户等级分布（分析贴吧用户各等级比例）
+![]()
+### 8. 年度的十大热帖（按年统计每年讨论最热的帖子）
+![](https://img-blog.csdn.net/20181006214114531?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 9. 十大活跃用户，按年分组（所谓的贴吧达人/大神）
+![](https://img-blog.csdn.net/20181006214418228?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 10. 粉丝最多的10大用户（吧里人气最高的明星）
+![](https://img-blog.csdn.net/20181006224326695?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 11. 大家最喜欢关注的贴吧-词云（分析大家都喜欢关注哪些贴吧）
+![](https://img-blog.csdn.net/20181006224553279?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 12. 男女比例分布（吧里的男女用户比例，到底是？）
+![](https://img-blog.csdn.net/201810071411210?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 13. 吧龄分布（大家贴吧的吧龄比例）
+![]()
+### 14. 十大发帖量最多的用户（看看哪些人最爱在贴吧发帖了）
+![](https://img-blog.csdn.net/20181006224705738?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 15. 帖子回复的词云（看所有帖子下大家都在说些什么）
+![](https://img-blog.csdn.net/20181006224754103?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 16. 贴吧名词云（大家最喜欢用什么词起名）
+![](https://img-blog.csdn.net/20181006224944943?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+### 17. 收到礼物最多的十大用户（最受欢迎的吧友到底是谁？）
+![]()
+### 18. 用户的头像大集合（一页展示所有用户的头像，并做图像分析出“平均头像”长啥样）
+![]()
+### 19. 用户设备分布（到底是苹果用户多，还是安卓用户？）
+![](https://img-blog.csdn.net/20181007141242823?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 # 数据分析/效果展示
 
