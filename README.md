@@ -64,7 +64,7 @@ java 爬虫，采用webmagic框架。目的爬取百度贴吧的数据，并做�
 19. 用户设备分布（到底是苹果用户多，还是安卓用户？）
 
 # 部分分析效果展示
-##帖子标题热点词汇
+## 帖子标题热点词汇
 ![](https://img-blog.csdn.net/20181006212441788?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 # 数据分析/效果展示
