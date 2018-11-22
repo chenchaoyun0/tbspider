@@ -5,10 +5,9 @@
 
 README
 ===========================
-java 爬虫，采用webmagic框架。目的爬取百度贴吧的数据，并做一些统计与数据分析，非商业，纯属个人娱乐。近期工作项目有用到爬虫，便开始学习并写了个demo。采用的是webmagic爬虫框架，爬取的内容有：帖子，帖子回复，用户主页。项目为springboot 1.5.7版本，提供数据持久化，前端采用echart做数据分析图表展示。 
-
+java 爬虫，采用webmagic框架。目的爬取百度贴吧的数据，并做一些统计与数据分析，非商业，纯属个人娱乐。近期工作项目有用到爬虫，便开始学习并写了个demo。
+采用的是webmagic爬虫框架，爬取的内容有：帖子，帖子回复，用户主页。项目为springboot 1.5.7版本，提供数据持久化，前端采用echart做数据分析图表展示。 
 百度贴吧的数据只能爬取到99999页，即不超过10万页，再往后就访问不了了。起初我是想爬取本校贴吧，看看大家都在聊啥，哪年那个帖子最火、词云等等，后来发现，百度贴吧其实风格都一样。
-
 希望这个项目能给初学 java 爬虫的有些帮助，大家也可以把环境搭建起来，爬取自己学校的贴吧。^_^ -
 
 -------------------- 本文来自 miserchen_cy 的CSDN 博客 ，全文地址请点击：https://blog.csdn.net/sinat_22767969/article/details/82953774?utm_source=copy  
@@ -45,7 +44,7 @@ java 爬虫，采用webmagic框架。目的爬取百度贴吧的数据，并做�
 ### 1. 帖子标题的热点词汇（分析贴吧用户使用最频繁的词汇）
 ![](https://img-blog.csdn.net/20181006212441788?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-2. 发帖与不发帖用户占比（潜水/只回帖用户与常发帖用户占比）
+### 2. 发帖与不发帖用户占比（潜水/只回帖用户与常发帖用户占比）
 ![](https://img-blog.csdn.net/20181007141049293?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 ### 3. 发帖有回复与没回复占比（石沉大海的帖子占比）
 ![](https://img-blog.csdn.net/20181007141142738?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NpbmF0XzIyNzY3OTY5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
