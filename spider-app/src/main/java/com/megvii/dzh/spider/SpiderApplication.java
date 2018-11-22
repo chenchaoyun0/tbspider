@@ -21,26 +21,26 @@ import tk.mybatis.spring.annotation.MapperScan;
 @Slf4j
 public class SpiderApplication implements ApplicationListener<ContextRefreshedEvent> {
 
-    public static void main(String args[]) {
-        SpringApplication.run(SpiderApplication.class, args);
-        log.info(">>>>>>>>>>>>>>>>>>>>>>spiderboot 启动成功!<<<<<<<<<<<<<<<<<<<<<<<<<");
-    }
+  public static void main(String args[]) {
+    SpringApplication.run(SpiderApplication.class, args);
+    log.info(">>>>>>>>>>>>>>>>>>>>>>spiderboot 启动成功!<<<<<<<<<<<<<<<<<<<<<<<<<");
+  }
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        log.info("--->开机服务执行的操作....");
-        try {
-            BootConfig bootConfig = SpringUtils.getBean(BootConfig.class);
-            Constant.setTbName(bootConfig.getSpiderTbName());
-            log.info("---> 待爬取的贴吧名为: {}",Constant.getTbName());
-          log.info("输入配置:{}", LogUtil.jsonFormatter(LogUtil.formatLog(bootConfig)));
-          DataSource dataSource = SpringUtils.getBean(DataSource.class);
-          String datasourceUrl = dataSource.getConnection().getMetaData().getURL();
-          String userName = dataSource.getConnection().getMetaData().getUserName();
-          log.info("数据源配置:{}@{}",userName,datasourceUrl);
-        } catch (Exception e) {
-            log.error("onApplicationEvent error", e);
-        }
+  @Override
+  public void onApplicationEvent(ContextRefreshedEvent event) {
+    log.info("--->开机服务执行的操作....");
+    try {
+      BootConfig bootConfig = SpringUtils.getBean(BootConfig.class);
+      Constant.setTbName(bootConfig.getSpiderTbName());
+      log.info("---> 待爬取的贴吧名为: {}", Constant.getTbName());
+      log.info("输入配置:{}", LogUtil.jsonFormatter(LogUtil.formatLog(bootConfig)));
+      DataSource dataSource = SpringUtils.getBean(DataSource.class);
+      String datasourceUrl = dataSource.getConnection().getMetaData().getURL();
+      String userName = dataSource.getConnection().getMetaData().getUserName();
+      log.info("数据源配置:{}@{}", userName, datasourceUrl);
+    } catch (Exception e) {
+      log.error("onApplicationEvent error", e);
     }
+  }
 
 }
