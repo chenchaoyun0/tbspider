@@ -16,14 +16,14 @@
     </properties>
 
     <parent>
-        <groupId>com.megvii.dzh</groupId>
+        <groupId>com.megvii.dzh.tb</groupId>
         <artifactId>tbspider</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <dependencies>
          <dependency>
-            <groupId>com.megvii.dzh</groupId>
+            <groupId>com.megvii.dzh.tb</groupId>
             <artifactId>thread-excute</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

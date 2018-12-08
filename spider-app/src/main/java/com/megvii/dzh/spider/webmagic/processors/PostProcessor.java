@@ -136,6 +136,7 @@ public class PostProcessor implements PageProcessor {
        */
       if (page.getUrl().regex(POST_URL).match()) {
         //SpiderFileUtils.writeString2local(html.toString(), "E://tieb-spider//postDetail.html");
+
         String title = html.xpath("/html/head/title/text()").get();
         //有时候获取不到帖子标题
         if (title == null) {
@@ -175,8 +176,7 @@ public class PostProcessor implements PageProcessor {
           log.info("---------> 继续爬取第【{}】页 贴吧 <-----------", pageNo / 50);
           // 将贴吧名编码
           String tieBaName = URLEncoder.encode(Constant.getTbName(), "UTF-8");
-          String match = MessageFormat
-              .format(TB_HOME_PAGE, tieBaName);
+          String match = MessageFormat.format(TB_HOME_PAGE, tieBaName);
           page.addTargetRequest(match + pageNo);
           pageNo = pageNo + 50;
         }
@@ -202,15 +202,13 @@ public class PostProcessor implements PageProcessor {
       /**
        * 过滤不是本校贴吧
        */
-      String tbName = html.xpath("//*[@id=\"container\"]/div/div[1]/div[2]/div[2]/a/text()")
-          .toString();
+      String tbName = html.xpath("//*[@id=\"container\"]/div/div[1]/div[2]/div[2]/a/text()").toString();
       if (StringUtils.isNotBlank(tbName) && tbName.indexOf(Constant.getTbName()) < 0) {
         return;
       }
 
       // 查看该帖子有多少页
-      String pageSize = html.xpath("//*[@id=\"thread_theme_5\"]/div[1]/ul/li[2]/span[2]/text()")
-          .toString();
+      String pageSize = html.xpath("//*[@id=\"thread_theme_5\"]/div[1]/ul/li[2]/span[2]/text()").toString();
       // 将帖子的下一页加入待爬
       int size = Integer.parseInt(pageSize == null ? "0" : pageSize);
       if (size >= 2) {
@@ -233,27 +231,18 @@ public class PostProcessor implements PageProcessor {
         // 获取不到信息
         return;
       }
-      String time =
-          html.xpath(
-              "//*[@id=\"j_p_postlist\"]/div[1]/div[3]/div[3]/div[1]/ul[2]/li[2]/span/text()")
-              .toString();
-      String content = html
-          .xpath("//*[@id=\"post_content_" + postUser.getContent().getPost_id() + "\"]/text()")
-          .toString();
-      String replyNum = html.xpath("//*[@id=\"thread_theme_5\"]/div[1]/ul/li[2]/span[1]/text()")
-          .toString();
+      String time = html.xpath("//*[@id=\"j_p_postlist\"]/div[1]/div[3]/div[3]/div[1]/ul[2]/li[2]/span/text()").toString();
+      String content = html.xpath("//*[@id=\"post_content_" + postUser.getContent().getPost_id() + "\"]/text()").toString();
+      String replyNum = html.xpath("//*[@id=\"thread_theme_5\"]/div[1]/ul/li[2]/span[1]/text()").toString();
       String title = html.xpath("//*[@id=\"j_core_title_wrap\"]/div[2]/h1/a/text()").toString();
-      String userNickName = html.xpath("//*[@id=\"j_p_postlist\"]/div[1]/div[2]/ul/li[3]/a/text()")
-          .toString();
+      String userNickName = html.xpath("//*[@id=\"j_p_postlist\"]/div[1]/div[2]/ul/li[3]/a/text()").toString();
       String userHref = html.xpath("//*[@id=\"j_p_postlist\"]/div/div[2]/ul/li[3]/a/@href").get();
       String userName = postUser.getAuthor().getUser_name();
       // 保存数据
       post.setContent(SpiderStringUtils.xffReplace(content));
       post.setPostUrl(StringUtils.substringBefore(url, "?pn="));
       post.setReplyNum(Integer.parseInt(StringUtils.isBlank(replyNum) ? "0" : replyNum));
-      post.setTime(DateConvertUtils
-          .parse(postUser.getContent().getDate() == null ? time : postUser.getContent().getDate(),
-              DateConvertUtils.DATE_TIME_NO_SS));
+      post.setTime(DateConvertUtils.parse(postUser.getContent().getDate() == null ? time : postUser.getContent().getDate(), DateConvertUtils.DATE_TIME_NO_SS));
       post.setTitle(SpiderStringUtils.xffReplace(title));
       post.setType(1);
       post.setUserName(SpiderStringUtils.xffReplace(userName));
@@ -285,8 +274,7 @@ public class PostProcessor implements PageProcessor {
 
   private void commentData(Page page, Html html) {
     // 当前页回帖数量
-    List<String> commentSize = html
-        .xpath("//*[@id=\"j_p_postlist\"]/@class=l_post j_l_post l_post_bright/").all();
+    List<String> commentSize = html.xpath("//*[@id=\"j_p_postlist\"]/@class=l_post j_l_post l_post_bright/@data-field/").all();
     if (CollectionUtils.isEmpty(commentSize) || commentSize.size() < 0) {
       return;
     }
@@ -296,8 +284,7 @@ public class PostProcessor implements PageProcessor {
      */
     List<Comment> listComment = new ArrayList<>();
     for (int i = 2; i <= commentSize.size(); i++) {
-      String dataComment = html.xpath("//*[@id=\"j_p_postlist\"]/div[" + i + "]/@data-field")
-          .toString();
+      String dataComment = html.xpath("//*[@id=\"j_p_postlist\"]/div[" + i + "]/@data-field").toString();
       String userHref = html
           .xpath("//*[@id=\"j_p_postlist\"]/div[" + i + "]/div[2]/ul/li[3]/a/@href").get();
       /**
@@ -313,8 +300,7 @@ public class PostProcessor implements PageProcessor {
         dataCommentPo = JSONObject.parseObject(dataComment, PostUser.class);
         //
         String contentComment = html.xpath(
-            "//*[@id=\"post_content_" + dataCommentPo.getContent().getPost_id() + "\"]/text()")
-            .toString();
+            "//*[@id=\"post_content_" + dataCommentPo.getContent().getPost_id() + "\"]/text()").toString();
         String userNameComment = html
             .xpath("//*[@id=\"j_p_postlist\"]/div[" + i + "]/div[2]/ul/li[3]/a/text()").toString();
         //
@@ -322,8 +308,7 @@ public class PostProcessor implements PageProcessor {
         comment.setContent(SpiderStringUtils.xffReplace(contentComment));
         comment.setPostUrl(page.getUrl().toString());
         comment.setUserDevice(dataCommentPo.getContent().getOpen_type());
-        comment.setTime(DateConvertUtils
-            .parse(dataCommentPo.getContent().getDate(), DateConvertUtils.DATE_TIME_NO_SS));
+        comment.setTime(DateConvertUtils.parse(dataCommentPo.getContent().getDate(), DateConvertUtils.DATE_TIME_NO_SS));
         comment.setUserName(SpiderStringUtils.xffReplace(userNameComment));
         //
         listComment.add(comment);
@@ -348,34 +333,27 @@ public class PostProcessor implements PageProcessor {
       if (StringUtils.isNotBlank(bodyclass) && bodyclass.contains("404")) {
         return;
       }
-      String userName = html.xpath("//*[@id=\"userinfo_wrap\"]/div[2]/div[3]/div/span[2]/text()")
-          .toString();
+      String userName = html.xpath("//*[@id=\"userinfo_wrap\"]/div[2]/div[3]/div/span[2]/text()").toString();
       userName = StringUtils.substringAfter(userName, "用户名:");
-      String fansCount = html.xpath("//*[@id=\"container\"]/div[2]/div[4]/h1/span/a/text()")
-          .toString();
-      String followCount = html.xpath("//*[@id=\"container\"]/div[2]/div[3]/h1/span/a/text()")
-          .toString();
-      String gender = html.xpath("//*[@id=\"userinfo_wrap\"]/div[2]/div[3]/div/span[1]/@class")
-          .get();
+      String fansCount = html.xpath("//*[@id=\"container\"]/div[2]/div[4]/h1/span/a/text()").toString();
+      String followCount = html.xpath("//*[@id=\"container\"]/div[2]/div[3]/h1/span/a/text()").toString();
+      String gender = html.xpath("//*[@id=\"userinfo_wrap\"]/div[2]/div[3]/div/span[1]/@class").get();
       String tbAge = html
           .xpath("//*[@id=\"userinfo_wrap\"]/div[2]/div[3]/div/span[2]/span[2]/text()").toString();
       List<String> all = html.xpath("//*[@id=\"container\"]/div[1]/div/div[3]/ul/").all();
       String userHeadUrl = html.xpath("//*[@id=\"j_userhead\"]/a/img/@src").get();
       // 用户关注的贴吧
-      List<String> userTiebs = html.xpath("//*[@id=\"forum_group_wrap\"]/").all();
+      List<String> userTiebs = html.xpath("//*[@id=\"forum_group_wrap\"]/a/span[1]/text()").all();
       if (!CollectionUtils.isEmpty(userTiebs)) {
         List<UserTbs> userTbsList = new ArrayList<>();
         for (int i = 1; i <= userTiebs.size(); i++) {
           UserTbs userTbs = new UserTbs();
-          String tbName = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[1]/text()")
-              .toString();
+          String tbName = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[1]/text()").toString();
           if (StringUtils.isBlank(tbName)) {
-            tbName = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[2]/text()")
-                .toString();
+            tbName = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[2]/text()").toString();
           }
           //
-          String level = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[2]/@class")
-              .get();
+          String level = html.xpath("//*[@id=\"forum_group_wrap\"]/a[" + i + "]/span[2]/@class").get();
           if (StringUtils.isBlank(level)) {
             level = html.xpath("//*[@id=\"forum_group_wrap\"]/a[3]/span[3]/@class").get();
           }
@@ -422,8 +400,7 @@ public class PostProcessor implements PageProcessor {
   public static void main(String[] args) {
     Spider.create(new PostProcessor())//
         //http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E5%B7%A5%E4%B8%9A%E5%AD%A6%E9%99%A2&ie=utf-8
-        .addUrl(
-            "http://tieba.baidu.com/f?kw=%E5%A4%AA%E5%8E%9F%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6&ie=utf-8")//
+        .addUrl("http://tieba.baidu.com/home/main?un=那啥442")//
         .addPipeline(new ConsolePipeline())//
         .thread(1)//
         .run();
